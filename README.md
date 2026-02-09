@@ -1,6 +1,30 @@
 # 生成管理器
 
-基于 Electron + Vite + React + TypeScript 的桌面应用。
+基于 Electron + Vite + React + TypeScript 的桌面应用，用来把「任务、日记、专注、复盘」放在一个地方，数据默认本地存储。
+
+![生成管理器主图](docs/screenshots/hero.png)
+
+## 截图
+
+| 任务看板 | 数据复盘 | 设置（含数据目录） |
+| --- | --- | --- |
+| ![任务看板](docs/screenshots/tasks.png) | ![数据复盘](docs/screenshots/stats.png) | ![设置](docs/screenshots/settings.png) |
+
+## 功能概览
+
+- 任务：创建与管理任务
+- 日记：记录与回顾
+- 专注：计时器与专注流程
+- 复盘：数据统计与趋势查看
+- 数据存储：在设置页可查看并更改数据目录（会复制数据库与日志到新位置，旧位置不删除）
+
+## 技术栈
+
+- Electron
+- Vite + React
+- TypeScript
+- Zustand
+- SQLite（better-sqlite3）
 
 ## 本地开发
 
@@ -10,52 +34,3 @@
 npm install
 npm run dev
 ```
-
-## 构建与打包
-
-```bash
-npm run lint
-npm run typecheck
-npm run test:shared
-```
-
-```bash
-npm run build
-```
-
-构建输出：
-
-- 渲染进程：`dist/`
-- Electron 主进程/预加载：`dist-electron/`
-- 安装包/产物：`release/<version>/`
-
-## 上传到 GitHub（最常用流程）
-
-1. 在 GitHub 新建一个空仓库（不要勾选添加 README / .gitignore）。
-2. 在项目根目录执行：
-
-```bash
-git init
-git add .
-git commit -m "chore: init"
-git branch -M main
-git remote add origin <你的仓库地址>
-git push -u origin main
-```
-
-如果你使用 HTTPS，GitHub 需要使用 Personal Access Token（PAT）替代密码。
-
-## 文档怎么写（建议结构）
-
-如果只写一个主文档，优先维护本 README：
-
-- 项目是什么（1 句话）
-- 主要功能（要点列表）
-- 怎么跑起来（安装/开发/构建）
-- 常见问题（FAQ）
-
-如果文档会变多，放到 `docs/` 下，按主题拆分：
-
-- `docs/usage/`：使用说明
-- `docs/dev/`：开发与架构
-- `docs/troubleshooting/`：排障记录
