@@ -1,0 +1,122 @@
+.player-bar {
+  position: relative;
+  height: 72px;
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  box-shadow: 0 -6px 20px rgba(15, 23, 42, 0.06);
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  overflow: hidden;
+}
+
+.player-progress {
+  height: 3px;
+  background: var(--gray-200);
+}
+
+.player-progress-fill {
+  height: 100%;
+  background: var(--color-primary);
+}
+
+.player-content {
+  height: calc(100% - 3px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-4);
+  gap: var(--space-4);
+}
+
+.player-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 220px;
+}
+
+.player-cover {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  background: var(--primary-50);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.player-text {
+  min-width: 0;
+}
+
+.player-title {
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--color-text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.player-artist {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.player-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.btn-icon-lg {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  border: none;
+  background: var(--color-primary);
+  color: white;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-icon-lg:hover {
+  background: var(--color-primary-hover);
+  box-shadow: var(--shadow-md);
+}
+
+.player-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.volume-control {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-text-muted);
+}
+
+.volume-slider {
+  width: 120px;
+}
+
+@media (max-width: 960px) {
+  .player-info {
+    min-width: 160px;
+  }
+
+  .volume-slider {
+    width: 84px;
+  }
+}

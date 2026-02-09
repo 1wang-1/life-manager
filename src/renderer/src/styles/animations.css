@@ -1,0 +1,426 @@
+/* ====== 动画库 - 平衡模式（100-200ms为主） ====== */
+
+/* 页面进入动画 - 300ms（允许稍长） */
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pageSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 模态框动画 - 200ms */
+@keyframes modalSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* 列表项进入动画 - 200ms */
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* 悬浮效果 - 150ms过渡（在CSS中定义） */
+@keyframes floatUp {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+/* 状态变化动画 - 2秒循环（强调状态） */
+@keyframes breathe {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 20px rgba(var(--color-primary-rgb), 0.3);
+  }
+  50% {
+    opacity: 0.7;
+    box-shadow: 0 0 30px rgba(var(--color-primary-rgb), 0.5);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+}
+
+/* 庆祝动画 */
+@keyframes confettiFall {
+  0% {
+    transform: translateY(-100vh) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-2px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(2px);
+  }
+}
+
+/* 加载动画 */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* 数字滚动 */
+@keyframes countUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 卡片悬停效果 */
+@keyframes cardHover {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-4px);
+  }
+}
+
+/* 按钮点击效果 */
+@keyframes buttonPress {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* 进度条动画 */
+@keyframes progressFill {
+  from {
+    width: 0%;
+  }
+}
+
+/* 闪烁效果 */
+@keyframes flash {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* 滑入效果 */
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* 缩放弹出 */
+@keyframes popIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  70% {
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* 旋转进入 */
+@keyframes rotateIn {
+  from {
+    opacity: 0;
+    transform: rotate(-180deg) scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+  }
+}
+
+/* 波纹扩散 */
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* 渐变流动 */
+@keyframes gradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* 打字机效果 */
+@keyframes typewriter {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* 闪烁光标 */
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+/* ====== 动画应用类 ====== */
+
+/* 页面动画 */
+.animate-page-in {
+  animation: pageFadeIn var(--transition-slow) var(--ease-out);
+}
+
+.animate-page-up {
+  animation: pageSlideUp var(--transition-slow) var(--ease-out);
+}
+
+/* 模态框动画 */
+.animate-modal {
+  animation: modalSlideUp var(--transition-normal) var(--ease-out);
+}
+
+.animate-modal-fade {
+  animation: modalFadeIn var(--transition-fast) var(--ease-out);
+}
+
+/* 列表项动画 */
+.animate-slide-in {
+  animation: slideInLeft var(--transition-normal) var(--ease-out);
+}
+
+.animate-slide-up {
+  animation: slideInUp var(--transition-normal) var(--ease-out);
+}
+
+.animate-scale-in {
+  animation: scaleIn var(--transition-normal) var(--ease-out);
+}
+
+/* 状态动画 */
+.breathe {
+  animation: breathe 2s ease-in-out infinite;
+}
+
+.pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.float {
+  animation: floatUp 2s ease-in-out infinite;
+}
+
+/* 加载动画 */
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+/* 卡片悬停动画 */
+.card-hover {
+  animation: cardHover var(--transition-normal) var(--ease-out);
+}
+
+/* 按钮点击动画 */
+.button-press {
+  animation: buttonPress var(--transition-fast) var(--ease-out);
+}
+
+/* 进度条动画 */
+.progress-fill {
+  animation: progressFill var(--transition-smooth) var(--ease-out);
+}
+
+/* 闪烁动画 */
+.flash {
+  animation: flash 1s ease-in-out infinite;
+}
+
+/* 滑入动画 */
+.slide-in-right {
+  animation: slideInRight var(--transition-normal) var(--ease-out);
+}
+
+/* 缩放弹出动画 */
+.pop-in {
+  animation: popIn var(--transition-bounce) var(--ease-out);
+}
+
+/* 旋转进入动画 */
+.rotate-in {
+  animation: rotateIn var(--transition-smooth) var(--ease-out);
+}
+
+/* 波纹扩散动画 */
+.ripple {
+  animation: ripple 0.6s ease-out;
+}
+
+/* 渐变流动动画 */
+.gradient-flow {
+  animation: gradientFlow 3s ease infinite;
+  background-size: 200% 200%;
+}
+
+/* 打字机动画 */
+.typewriter {
+  animation: typewriter var(--transition-smooth) var(--ease-out);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* 闪烁光标动画 */
+.blink-cursor {
+  animation: blink 1s step-end infinite;
+}
+
+/* 降级 - prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .breathe,
+  .pulse,
+  .float,
+  .flash {
+    animation: none;
+  }
+
+  .animate-page-in,
+  .animate-modal,
+  .animate-slide-in,
+  .animate-scale-in,
+  .card-hover,
+  .button-press,
+  .progress-fill,
+  .slide-in-right,
+  .pop-in,
+  .rotate-in,
+  .ripple,
+  .gradient-flow,
+  .typewriter {
+    animation: none;
+  }
+}

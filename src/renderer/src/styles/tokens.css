@@ -1,0 +1,129 @@
+:root {
+  /* --- THEME SYSTEM --- */
+  /* These will be overridden by ThemeManager based on user settings */
+  --color-primary: #FFB000;
+  --color-primary-rgb: 255, 176, 0;
+  --color-primary-hover: #F5A300;
+  --color-primary-active: #E09600;
+  --color-primary-dark: #CC8800;
+  --color-primary-soft: rgba(255, 176, 0, 0.12);
+  --color-primary-light-bg: rgba(255, 176, 0, 0.08);
+  /* WCAG Compliance: Use dark text on yellow background for better contrast */
+  --color-on-primary: #1E2A3B;
+
+  /* --- NEUTRAL SYSTEM (Light Mode Defaults) --- */
+  --gray-50: #F9FAFB;
+  --color-bg-main: #F1F5F9;
+  --color-bg-card: #FFFFFF;
+  --color-bg-sidebar: #FFFFFF;
+  --color-bg-soft: #EFF2F6;
+  --color-bg-subtle: #F8FAFC;
+  
+  --color-text-main: #1E2A3B;
+  --color-text-secondary: #5B677A;
+  --color-text-muted: #77839A;
+  --color-text-tertiary: #8A98AD;
+  --color-text-inverse: #FFFFFF;
+
+  --color-border: #E1E6ED;
+  --color-border-light: #EDF1F6;
+  --color-border-hover: #CBD3DD;
+  --color-border-strong: #C7D0DB;
+
+  /* --- SEMANTIC COLORS --- */
+  --color-info: #4C8DFF;
+  --color-success: #36C090;
+  --color-warning: #FF8A3D;
+  --color-danger: #FF5A55;
+
+  /* --- SPACING (8pt Grid) --- */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-6: 48px;
+  
+  /* --- RADIUS --- */
+  --radius-card: 16px;
+  --radius-input: 10px;
+  --radius-tag: 10px;
+  --radius-full: 9999px;
+
+  /* --- SHADOWS --- */
+  --shadow-1: 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-2: 0 8px 24px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.06);
+  --shadow-md: 0 6px 16px rgba(0,0,0,0.08);
+  --shadow-lg: 0 16px 32px rgba(0,0,0,0.12);
+  --shadow-xl: 0 24px 48px rgba(0,0,0,0.16);
+  --shadow-primary: 0 4px 12px rgba(var(--color-primary-rgb), 0.25);
+  
+  /* --- TYPOGRAPHY --- */
+  --font-h1-size: 28px;
+  --font-h1-height: 32px;
+  --font-h1-weight: 600;
+
+  --font-h2-size: 20px;
+  --font-h2-height: 24px;
+  --font-h2-weight: 600;
+
+  --font-body-size: 16px;
+  --font-body-height: 24px;
+  --font-body-weight: 400;
+
+  --font-secondary-size: 14px;
+  --font-secondary-height: 20px;
+  --font-secondary-weight: 400;
+
+  --font-caption-size: 12px;
+  --font-caption-height: 16px;
+  --font-caption-weight: 400;
+
+  /* --- COMPONENT HEIGHTS --- */
+  --height-header: 64px;
+  --height-sidebar-item: 40px;
+  --height-button: 40px;
+  --height-button-lg: 48px;
+  --height-input: 40px;
+  --height-tag: 24px;
+  --height-list-item: 48px;
+}
+
+/* --- DARK MODE OVERRIDES --- */
+.dark {
+  /* Backgrounds */
+  --gray-50: #1E293B; /* Slate 800 */
+  --color-bg-main: #0F172A; /* Slate 900 */
+  --color-bg-card: #1E293B; /* Slate 800 */
+  --color-bg-sidebar: #1E293B; /* Slate 800 */
+  --color-bg-soft: #334155; /* Slate 700 */
+  --color-bg-subtle: #111827; /* Gray 900 */
+  
+  /* Text */
+  --color-text-main: #F1F5F9; /* Slate 100 */
+  --color-text-secondary: #94A3B8; /* Slate 400 */
+  --color-text-muted: #64748B; /* Slate 500 */
+  --color-text-tertiary: #475569; /* Slate 600 */
+  --color-text-inverse: #0F172A; /* Slate 900 */
+
+  /* Borders */
+  --color-border: #334155; /* Slate 700 */
+  --color-border-light: #1E293B; /* Slate 800 */
+  --color-border-hover: #475569; /* Slate 600 */
+  --color-border-strong: #475569; /* Slate 600 */
+
+  /* Shadows - Darker and more subtle */
+  --shadow-1: 0 2px 8px rgba(0,0,0,0.4);
+  --shadow-2: 0 8px 24px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.2);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
+  --shadow-md: 0 6px 16px rgba(0,0,0,0.4);
+  --shadow-lg: 0 16px 32px rgba(0,0,0,0.5);
+  --shadow-xl: 0 24px 48px rgba(0,0,0,0.6);
+  
+  /* Primary Shadow needs to be adjusted in JS or use variable here? 
+     ThemeManager uses rgba(rgb, 0.25). 
+     In dark mode, we might want it brighter or less visible. 
+     But since it's set in JS, we can't easily override it here unless we use !important or change JS.
+     However, standard shadows are overridden here. */
+}

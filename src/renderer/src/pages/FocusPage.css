@@ -1,0 +1,328 @@
+.focus-page {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--color-bg-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  z-index: 10;
+}
+
+.focus-page-backdrop {
+  display: none;
+}
+
+.focus-panel.ticktick-style {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: var(--color-bg-main);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem;
+}
+
+/* Top Bar */
+.focus-top-bar {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 60px;
+  flex-shrink: 0;
+}
+
+.mode-switcher {
+  display: flex;
+  background: var(--color-bg-soft);
+  padding: 4px;
+  border-radius: 20px;
+  gap: 4px;
+}
+
+.mode-btn {
+  border: none;
+  background: transparent;
+  padding: 6px 20px;
+  border-radius: 16px;
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.mode-btn:hover:not(:disabled) {
+  color: var(--color-text-main);
+}
+
+.mode-btn.active {
+  background: var(--color-bg-card);
+  color: var(--color-primary);
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.mode-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.window-controls {
+  position: absolute;
+  right: 0;
+  display: flex;
+  gap: 8px;
+}
+
+.icon-btn {
+  background: transparent;
+  border: none;
+  color: var(--color-text-secondary);
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-btn:hover {
+  background: var(--color-bg-soft);
+  color: var(--color-text-main);
+}
+
+/* Center Content */
+.focus-center-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 2rem;
+}
+
+.focus-context {
+  text-align: center;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.focus-subtitle {
+  display: block;
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  margin-bottom: 4px;
+}
+
+.focus-task-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--color-text-main);
+  margin: 0;
+  max-width: 80vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.focus-stage-meta {
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  opacity: 0.85;
+}
+
+/* Circular Progress */
+.circular-progress-container {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.circular-progress-svg {
+  transform: rotate(-90deg);
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.progress-bg {
+  fill: none;
+  stroke: var(--color-bg-soft);
+}
+
+.progress-fg {
+  fill: none;
+  stroke: var(--color-primary);
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.5s linear;
+}
+
+.circular-content {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.timer-value {
+  font-size: 4rem;
+  font-weight: 300; /* Thin font like iOS timer */
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-main);
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+.timer-status {
+  margin-top: 8px;
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+  opacity: 0.8;
+}
+
+/* Tick Ring Styles */
+.tick {
+  stroke: var(--color-border); /* Inactive tick color */
+  transition: stroke 0.3s ease;
+}
+
+.tick.active {
+  stroke: var(--color-primary); /* Active tick color */
+}
+
+.tick.major {
+  /* Major ticks (10 min marks) */
+}
+
+.tick.major.active {
+  stroke: var(--color-primary);
+  /* Maybe slightly darker or brighter if needed, but primary is fine */
+}
+
+/* Breathing Animation for Current Tick */
+@keyframes breathing-tick {
+  0%, 100% {
+    stroke-opacity: 1;
+    stroke-width: 3px;
+  }
+  50% {
+    stroke-opacity: 0.5;
+    stroke-width: 4px;
+  }
+}
+
+/* 
+   User req: "Micro-breathing animation (every 8 seconds once)" 
+   We apply this to the .current tick.
+   Duration 8s. Effect happens quickly (e.g. within 2s), then waits.
+*/
+@keyframes pulse-8s {
+  0% { opacity: 1; transform: scale(1); }
+  5% { opacity: 0.5; transform: scale(1.1); } /* 5% of 8s is 0.4s - fast breath out */
+  10% { opacity: 1; transform: scale(1); }   /* 10% of 8s is 0.8s - fast breath in */
+  100% { opacity: 1; transform: scale(1); }  /* Wait for rest */
+}
+
+/* Since transform scale on SVG line might be weird with rotation center, 
+   let's stick to opacity/stroke-width or color intensity. 
+*/
+@keyframes pulse-stroke-8s {
+  0% { stroke-opacity: 1; }
+  10% { stroke-opacity: 0.4; stroke-width: 4px; }
+  20% { stroke-opacity: 1; stroke-width: 2px; } /* Back to normal */
+  100% { stroke-opacity: 1; }
+}
+
+.tick.current {
+  animation: pulse-stroke-8s 8s infinite ease-in-out;
+  /* Ensure transform-origin is set if we were scaling, but we aren't */
+}
+
+.tick.current.major {
+   /* Adjust animation for major tick if needed (stroke width different) */
+   animation-name: pulse-stroke-major-8s;
+}
+
+@keyframes pulse-stroke-major-8s {
+  0% { stroke-opacity: 1; }
+  10% { stroke-opacity: 0.4; stroke-width: 5px; }
+  20% { stroke-opacity: 1; stroke-width: 3px; }
+  100% { stroke-opacity: 1; }
+}
+
+
+/* Bottom Controls */
+.focus-bottom-controls {
+  margin-top: auto;
+  margin-bottom: 2rem;
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.control-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 100px;
+  padding: 12px 24px;
+}
+
+.control-btn.primary {
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  box-shadow: 0 4px 12px rgba(var(--color-primary-rgb), 0.3);
+}
+
+.control-btn.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(var(--color-primary-rgb), 0.4);
+}
+
+.control-btn.primary:active {
+  transform: translateY(0);
+}
+
+.control-btn.secondary {
+  background: var(--color-bg-soft);
+  color: var(--color-text-main);
+  border: 1px solid transparent;
+}
+
+.control-btn.secondary:hover {
+  background: var(--color-bg-card);
+  border-color: var(--color-border);
+}
+
+.control-btn.is-dimmed {
+  opacity: 0.45;
+  filter: saturate(0.35);
+}
+
+.control-btn.is-dimmed:hover {
+  opacity: 0.6;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,146 @@
+{
+  "meta": {
+    "app": "Life Manager Desktop",
+    "version": "1.1.0",
+    "createdAt": "2026-02-07"
+  },
+  "tokens": {
+    "color": {
+      "seedling": "#4ADE80",
+      "tree": "#16A34A",
+      "forest": "#15803D",
+      "empty": "#E5E7EB",
+      "textPrimary": "#1F2937",
+      "textSecondary": "#6B7280",
+      "bgCard": "#FFFFFF",
+      "bgPage": "#F3F4F6"
+    },
+    "typography": {
+      "base": 14,
+      "h1": 24,
+      "h2": 18,
+      "label": 12
+    },
+    "spacing": {
+      "unit": 4,
+      "md": 16,
+      "lg": 24
+    },
+    "radii": {
+      "md": 8,
+      "full": 9999
+    }
+  },
+  "pages": [
+    {
+      "id": "calendar_growth",
+      "name": "Weekly Growth",
+      "grid": {
+        "cols": 12,
+        "gap": 16
+      },
+      "sections": [
+        "current_growth_card",
+        "history_forest_list"
+      ]
+    }
+  ],
+  "components": [
+    {
+      "id": "growth_stage_icon",
+      "name": "Growth Icon",
+      "props": {
+        "stage": [
+          "seedling",
+          "tree",
+          "forest",
+          "empty"
+        ],
+        "size": [
+          24,
+          48,
+          80
+        ]
+      },
+      "variants": [
+        {
+          "name": "seedling",
+          "color": "{color.seedling}",
+          "icon": "leaf-outline"
+        },
+        {
+          "name": "tree",
+          "color": "{color.tree}",
+          "icon": "tree-outline"
+        },
+        {
+          "name": "forest",
+          "color": "{color.forest}",
+          "icon": "forest-outline"
+        }
+      ]
+    },
+    {
+      "id": "growth_card",
+      "name": "Weekly Growth Card",
+      "props": {
+        "state": [
+          "seedling",
+          "tree",
+          "forest"
+        ]
+      },
+      "composition": [
+        {
+          "element": "icon",
+          "size": 80,
+          "align": "center"
+        },
+        {
+          "element": "label",
+          "text": "{state.label}",
+          "style": "h2"
+        },
+        {
+          "element": "time_text",
+          "text": "本周专注: {minutes} 分钟",
+          "style": "textSecondary"
+        },
+        {
+          "element": "progress_bar",
+          "items": 3,
+          "activeColor": "{state.color}",
+          "inactiveColor": "{color.empty}"
+        }
+      ]
+    },
+    {
+      "id": "history_row",
+      "name": "History Forest Row",
+      "props": {
+        "stage": [
+          "seedling",
+          "tree",
+          "forest"
+        ]
+      },
+      "composition": [
+        {
+          "element": "date_range",
+          "text": "MM/DD-MM/DD"
+        },
+        {
+          "element": "badge",
+          "text": "{stage.label}",
+          "bg": "{stage.color}10",
+          "color": "{stage.color}"
+        },
+        {
+          "element": "icon",
+          "size": 28,
+          "align": "right"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+<svg width="256" height="256" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <radialGradient id="canopy-tree" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(18 14) rotate(35) scale(24 20)">
+            <stop offset="0" stop-color="#BEE7B0" />
+            <stop offset="0.55" stop-color="#94D19A" />
+            <stop offset="1" stop-color="#5FAF74" />
+        </radialGradient>
+        <linearGradient id="trunk-tree" x1="22" y1="18" x2="28" y2="44" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#C69A6C" />
+            <stop offset="1" stop-color="#9C6E45" />
+        </linearGradient>
+    </defs>
+    <path d="M6 42 C 12 39, 19 38, 24 38 C 29 38, 36 39, 42 42 C 36 44, 30 45, 24 45 C 18 45, 12 44, 6 42 Z" fill="#2F3741" opacity="0.9" />
+    <path d="M10 41 C 14 39.6, 18.8 39.2, 24 39.2 C 29 39.2, 33.8 39.6, 38 41 C 33.3 41.8, 28.7 42.2, 24 42.2 C 19.3 42.2, 14.7 41.8, 10 41 Z" fill="#6B7C8A" opacity="0.35" />
+    <path d="M24 20 C 18 20, 14 24.2, 14 29.2 C 14 34.8, 18.7 38, 24 38 C 29.3 38, 34 34.8, 34 29.2 C 34 24.2, 30 20, 24 20 Z" fill="url(#canopy-tree)" stroke="#2F3A45" stroke-width="1.6" stroke-linejoin="round" />
+    <path d="M18 28 C 20 26.4, 22 26.2, 24 28" stroke="#2F3A45" stroke-opacity="0.18" stroke-width="1" stroke-linecap="round" />
+    <path d="M24 26.4 C 26.2 25.4, 28.2 25.8, 30 27.6" stroke="#2F3A45" stroke-opacity="0.16" stroke-width="1" stroke-linecap="round" />
+    <path d="M22 41 V 28.5 C 22 26.9, 23.2 25.8, 24.8 25.8 C 26.4 25.8, 27.6 26.9, 27.6 28.5 V 41" fill="url(#trunk-tree)" stroke="#2F3A45" stroke-width="1.6" stroke-linejoin="round" />
+</svg>

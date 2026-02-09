@@ -1,0 +1,197 @@
+
+html, body, #root {
+  background: transparent !important;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.pet-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  /* Make the whole container draggable */
+  -webkit-app-region: drag;
+  user-select: none;
+}
+
+/* Speech Bubble */
+.pet-bubble {
+  position: absolute;
+  top: 10px;
+  background: var(--color-bg-card);
+  padding: 8px 12px;
+  border-radius: 12px;
+  border-bottom-left-radius: 4px;
+  box-shadow: var(--shadow-md);
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  opacity: 0;
+  transform: translateY(10px) scale(0.9);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+  z-index: 10;
+  white-space: nowrap;
+  text-align: center;
+  border: 1px solid var(--color-border);
+}
+
+.pet-bubble.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.pet-bubble .bubble-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.pet-bubble .timer-display {
+  font-family: 'Monaco', 'Consolas', monospace;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--color-text-main);
+}
+
+.pet-bubble .sub-text {
+  font-size: 10px;
+  color: var(--color-text-muted);
+}
+
+/* Pet Body */
+.pet-body {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  transition: transform 0.2s;
+  /* Floating Animation */
+  animation: float 3s ease-in-out infinite;
+}
+
+.pet-body:active {
+  cursor: grabbing;
+  transform: scale(0.95);
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+  100% { transform: translateY(0px); }
+}
+
+.pet-avatar {
+  position: relative;
+  color: var(--color-text-secondary);
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+  transition: color 0.3s;
+}
+
+/* State Colors */
+.pet-body.working .pet-avatar {
+  color: var(--primary-500); /* Primary Green/Blue */
+}
+
+.pet-body.sleeping .pet-avatar {
+  color: var(--warning-500); /* Amber */
+}
+
+/* Eyes (Overlay on Bot icon) */
+.pet-eyes {
+  position: absolute;
+  top: 18px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.eye {
+  width: 4px;
+  height: 4px;
+  background: currentColor;
+  border-radius: 50%;
+  animation: blink 4s infinite;
+}
+
+@keyframes blink {
+  0%, 96%, 100% { transform: scaleY(1); }
+  98% { transform: scaleY(0.1); }
+}
+
+/* Pulse Effect for Working State */
+.pet-pulse {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid var(--primary-500);
+  opacity: 0;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.8); opacity: 0.5; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+/* Controls */
+.pet-controls {
+  position: absolute;
+  bottom: -30px; /* Hidden initially */
+  display: flex;
+  gap: 8px;
+  opacity: 0;
+  transition: all 0.2s;
+  pointer-events: none;
+  transform: translateY(-10px);
+}
+
+.pet-container:hover .pet-controls {
+  opacity: 1;
+  pointer-events: auto;
+  bottom: 10px; /* Slide up */
+  transform: translateY(0);
+}
+
+.pet-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-card);
+  color: var(--color-text-secondary);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  -webkit-app-region: no-drag; /* Buttons must be clickable */
+  transition: all 0.2s;
+}
+
+.pet-btn:hover {
+  transform: scale(1.1);
+  background: var(--color-bg-main);
+  color: var(--color-text-main);
+}
+
+.pet-btn.stop {
+  color: var(--error-500);
+}
+
+.pet-btn.stop:hover {
+  background: var(--error-50);
+}

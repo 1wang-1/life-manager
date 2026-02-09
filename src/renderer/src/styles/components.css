@@ -1,0 +1,426 @@
+/* ====== 公共组件基础样式 ====== */
+
+/* 按钮系统 - 统一且一致 */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 0 var(--space-3);
+  height: var(--height-button);
+  font-size: var(--font-body-size);
+  font-weight: 600;
+  border-radius: var(--radius-input);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  white-space: nowrap;
+}
+
+/* 按钮变体 */
+.btn-primary {
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  box-shadow: 0 4px 12px rgba(var(--color-primary-rgb), 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary:hover {
+  background: var(--color-primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(var(--color-primary-rgb), 0.3);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+  background: var(--color-primary-active);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+}
+
+.btn-ghost:hover {
+  background: var(--color-bg-soft);
+  color: var(--color-text-main);
+  border-color: var(--color-border-hover);
+}
+
+/* 卡片系统 */
+.card {
+  background: var(--color-bg-card);
+  border-radius: var(--radius-card);
+  border: 1px solid var(--color-border);
+  padding: var(--space-3);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.03); /* P0: 默认极轻阴影 */
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-2); /* P0: hover 增强阴影 */
+  border-color: var(--color-border-hover);
+}
+
+/* 输入框 */
+.input {
+  width: 100%;
+  height: var(--height-input);
+  padding: 0 var(--space-2);
+  font-size: var(--font-body-size);
+  font-family: inherit;
+  color: var(--color-text-main);
+  background: var(--color-bg-soft);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-input);
+  transition: all 0.2s ease;
+}
+
+.input:focus {
+  outline: none;
+  background: var(--color-bg-card);
+  border-color: var(--color-border-hover);
+  box-shadow: 0 0 0 2px var(--color-primary-soft);
+}
+
+.input:hover:not(:focus) {
+  border-color: var(--color-border-hover);
+}
+
+
+.input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: var(--bg-ghost);
+}
+
+.input::placeholder {
+  color: var(--text-tertiary);
+  transition: opacity var(--transition-fast);
+}
+
+.input:focus::placeholder {
+  opacity: 0.5;
+}
+
+/* 输入框错误状态 */
+.input.error {
+  border-color: var(--color-error);
+  animation: shake 0.5s ease-in-out;
+}
+
+.input.error:focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+}
+
+/* 标签与徽章 */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--text-xs);
+  font-weight: var(--font-semibold);
+  border-radius: var(--radius-full);
+  transition: all var(--transition-fast);
+  cursor: default;
+}
+
+.badge-primary {
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+.badge-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(var(--color-primary-rgb), 0.18);
+}
+
+.badge-secondary {
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  border: 1px solid var(--gray-200);
+}
+
+.badge-secondary:hover {
+  background: var(--bg-ghost);
+  border-color: var(--gray-300);
+}
+
+.badge-success {
+  background: rgba(var(--color-success), 0.1);
+  color: var(--color-success);
+}
+
+.badge-success:hover {
+  background: rgba(var(--color-success), 0.15);
+  transform: scale(1.05);
+}
+
+.badge-warning {
+  background: rgba(var(--color-warning), 0.1);
+  color: var(--color-warning);
+}
+
+.badge-warning:hover {
+  background: rgba(var(--color-warning), 0.15);
+  transform: scale(1.05);
+}
+
+.badge-error {
+  background: rgba(var(--color-error), 0.1);
+  color: var(--color-error);
+}
+
+.badge-error:hover {
+  background: rgba(var(--color-error), 0.15);
+  transform: scale(1.05);
+}
+
+/* 图标按钮 */
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--space-5);
+  height: var(--space-5);
+  padding: 0;
+  border-radius: var(--radius-md);
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+}
+
+.icon-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-md);
+  background: radial-gradient(circle at center, rgba(var(--color-primary-rgb), 0.1) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.icon-btn:hover {
+  background: var(--bg-ghost);
+  color: var(--text-primary);
+  transform: scale(1.1);
+}
+
+.icon-btn:hover::before {
+  opacity: 1;
+}
+
+.icon-btn:active {
+  transform: scale(0.95);
+}
+
+.icon-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.icon-btn:disabled:hover {
+  transform: none;
+  background: transparent;
+  color: var(--text-secondary);
+}
+
+/* 分隔线 */
+.divider {
+  height: 1px;
+  background: var(--gray-200);
+  margin: var(--space-4) 0;
+}
+
+.divider-vertical {
+  width: 1px;
+  height: auto;
+  background: var(--gray-200);
+  margin: 0 var(--space-4);
+}
+
+/* Dark Mode Overrides */
+@media (prefers-color-scheme: dark) {
+  .btn-ghost {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--color-text-secondary);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .btn-ghost:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--color-text-main);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .btn-glass {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    color: var(--color-text-main);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .btn-glass:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(var(--color-primary-rgb), 0.3);
+  }
+
+  .card {
+    background: var(--color-bg-card);
+    border-color: var(--color-border);
+  }
+
+  .card-header {
+    border-bottom-color: var(--color-border);
+  }
+
+  .card-footer {
+    border-top-color: var(--color-border);
+  }
+
+  .card-glass {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .input {
+    background: var(--color-bg-soft);
+    border-color: var(--color-border);
+    color: var(--color-text-main);
+  }
+
+  .input:focus {
+    background: var(--color-bg-card);
+    border-color: var(--color-primary);
+  }
+
+  .input:hover:not(:focus):not(:disabled) {
+    background: var(--color-bg-card);
+    border-color: var(--color-border-strong);
+  }
+
+  .input:disabled {
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  .badge-secondary {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--color-text-secondary);
+    border-color: var(--color-border);
+  }
+
+  .badge-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--color-border-strong);
+  }
+
+  .icon-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .divider {
+    background: var(--color-border);
+  }
+
+  .divider-vertical {
+    background: var(--color-border);
+  }
+}
+
+/* Manual dark mode toggle support */
+body.dark-mode .btn-ghost {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-text-secondary);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-text-main);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+body.dark-mode .btn-glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  color: var(--color-text-main);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .btn-glass:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(var(--color-primary-rgb), 0.3);
+}
+
+body.dark-mode .card {
+  background: var(--color-bg-card);
+  border-color: var(--color-border);
+}
+
+body.dark-mode .card-header {
+  border-bottom-color: var(--color-border);
+}
+
+body.dark-mode .card-footer {
+  border-top-color: var(--color-border);
+}
+
+body.dark-mode .card-glass {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+body.dark-mode .input {
+  background: var(--color-bg-soft);
+  border-color: var(--color-border);
+  color: var(--color-text-main);
+}
+
+body.dark-mode .input:focus {
+  background: var(--color-bg-card);
+  border-color: var(--color-primary);
+}
+
+body.dark-mode .input:hover:not(:focus):not(:disabled) {
+  background: var(--color-bg-card);
+  border-color: var(--color-border-strong);
+}
+
+body.dark-mode .input:disabled {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+body.dark-mode .badge-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-text-secondary);
+  border-color: var(--color-border);
+}
+
+body.dark-mode .badge-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--color-border-strong);
+}
+
+body.dark-mode .icon-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode .divider {
+  background: var(--color-border);
+}
+
+body.dark-mode .divider-vertical {
+  background: var(--color-border);
+}

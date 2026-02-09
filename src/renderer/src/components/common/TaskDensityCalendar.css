@@ -1,0 +1,73 @@
+.task-density-calendar {
+    /* Override or extend stats-date-picker styles */
+    min-height: 380px;
+    display: flex;
+    flex-direction: column;
+}
+
+.picker-day-cell {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.picker-day-cell.is-today {
+    border: 1px solid var(--color-primary);
+    font-weight: bold;
+    color: var(--color-primary);
+}
+
+.density-indicator {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 4px;
+}
+
+.density-indicator.level-1 {
+    background-color: var(--color-success);
+    opacity: 0.6;
+}
+
+.density-indicator.level-2 {
+    background-color: var(--color-warning);
+    width: 5px;
+    height: 5px;
+}
+
+.density-indicator.level-3 {
+    background-color: var(--color-danger);
+    width: 6px;
+    height: 6px;
+    box-shadow: 0 0 4px var(--color-danger-transparent);
+}
+
+.density-legend {
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    font-size: 11px;
+    color: var(--color-text-tertiary);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.legend-item .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+.legend-item .dot.level-1 { background-color: var(--color-success); }
+.legend-item .dot.level-2 { background-color: var(--color-warning); }
+.legend-item .dot.level-3 { background-color: var(--color-danger); }

@@ -1,0 +1,26 @@
+<svg width="256" height="256" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <radialGradient id="canopy-forest" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(18 13) rotate(30) scale(26 22)">
+            <stop offset="0" stop-color="#BEE7B0" />
+            <stop offset="0.5" stop-color="#94D19A" />
+            <stop offset="1" stop-color="#5FAF74" />
+        </radialGradient>
+        <linearGradient id="trunk-forest" x1="22" y1="18" x2="30" y2="44" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#C69A6C" />
+            <stop offset="1" stop-color="#9C6E45" />
+        </linearGradient>
+    </defs>
+    <path d="M6 42 C 12 39, 19 38, 24 38 C 29 38, 36 39, 42 42 C 36 44, 30 45, 24 45 C 18 45, 12 44, 6 42 Z" fill="#2F3741" opacity="0.9" />
+    <path d="M10 41 C 14 39.6, 18.8 39.2, 24 39.2 C 29 39.2, 33.8 39.6, 38 41 C 33.3 41.8, 28.7 42.2, 24 42.2 C 19.3 42.2, 14.7 41.8, 10 41 Z" fill="#6B7C8A" opacity="0.35" />
+    <path d="M24 18.5 C 16.5 18.5, 11 24.2, 11 30.4 C 11 37.2, 17 40.6, 24 40.6 C 31 40.6, 37 37.2, 37 30.4 C 37 24.2, 31.5 18.5, 24 18.5 Z" fill="url(#canopy-forest)" stroke="#2F3A45" stroke-width="1.7" stroke-linejoin="round" />
+    <path d="M14.5 29 C 16.2 27.2, 18.7 26.3, 21 27.8" stroke="#2F3A45" stroke-opacity="0.14" stroke-width="1" stroke-linecap="round" />
+    <path d="M22.5 25.5 C 25.2 24.2, 28.2 24.5, 30.4 26.6" stroke="#2F3A45" stroke-opacity="0.14" stroke-width="1" stroke-linecap="round" />
+    <path d="M18.5 34.2 C 20.2 32.9, 22 32.6, 24.2 34" stroke="#2F3A45" stroke-opacity="0.12" stroke-width="1" stroke-linecap="round" />
+    <g opacity="0.22">
+        <path d="M15.5 22.8 C 14.2 24.1, 13.4 25.5, 13 26.8" stroke="#2F3A45" stroke-width="1" stroke-linecap="round" />
+        <path d="M31.8 21.8 C 34 23.4, 35.4 25.2, 35.8 27.2" stroke="#2F3A45" stroke-width="1" stroke-linecap="round" />
+    </g>
+    <path d="M21.2 41 V 27.2 C 21.2 25.1, 22.9 23.4, 25 23.4 C 27.1 23.4, 28.8 25.1, 28.8 27.2 V 41" fill="url(#trunk-forest)" stroke="#2F3A45" stroke-width="1.7" stroke-linejoin="round" />
+    <path d="M24.8 27.8 C 22.6 30.2, 20.6 31.5, 18.8 33.3" stroke="#2F3A45" stroke-opacity="0.22" stroke-width="1.2" stroke-linecap="round" />
+    <path d="M25.2 27.6 C 27.3 30, 29.4 31.2, 31.4 33" stroke="#2F3A45" stroke-opacity="0.22" stroke-width="1.2" stroke-linecap="round" />
+</svg>

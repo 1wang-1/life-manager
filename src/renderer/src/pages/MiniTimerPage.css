@@ -1,0 +1,278 @@
+:root {
+  --mini-padding: 16px;
+  --mini-primary: var(--color-primary);
+  --mini-primary-hover: var(--color-primary-hover);
+  --mini-text: var(--color-text-main);
+  --mini-sub: var(--color-text-tertiary);
+  --mini-danger: var(--color-error, #ef4444);
+  --mini-surface: var(--color-bg-card);
+  --mini-surface-2: var(--color-bg-subtle);
+  --mini-stroke: rgba(0, 0, 0, 0.08);
+  --mini-stroke-2: rgba(255, 255, 255, 0.55);
+  --mini-shadow: var(--shadow-2);
+  --mini-hover: rgba(0, 0, 0, 0.04);
+}
+
+.dark {
+  --mini-surface: var(--color-bg-card);
+  --mini-surface-2: var(--color-bg-subtle);
+  --mini-stroke: rgba(255, 255, 255, 0.12);
+  --mini-stroke-2: rgba(255, 255, 255, 0.08);
+  --mini-shadow: var(--shadow-2);
+  --mini-hover: rgba(255, 255, 255, 0.06);
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: transparent !important;
+}
+
+/* Page Container */
+.mini-page {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  -webkit-app-region: drag;
+  isolation: isolate;
+  
+  background: var(--mini-surface);
+  border: 1px solid var(--mini-stroke);
+  box-shadow: var(--mini-shadow);
+  border-radius: 20px;
+}
+
+.mini-page::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(120% 90% at 18% 0%, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 60%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0) 45%);
+  opacity: 0.75;
+}
+
+.dark .mini-page::before {
+  background:
+    radial-gradient(120% 90% at 18% 0%, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 60%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0) 45%);
+  opacity: 1;
+}
+
+.mini-page.paused {
+  opacity: 0.96;
+}
+
+.mini-page.paused .mini-timer-display {
+  color: var(--color-text-secondary);
+}
+
+/* Header */
+.mini-header {
+  height: clamp(28px, 10cqh, 38px);
+  min-height: 28px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 3cqw;
+  -webkit-app-region: drag; /* Header is draggable */
+  position: absolute; /* Float header */
+  top: 6px;
+  left: 6px;
+  right: 6px;
+  z-index: 10;
+}
+
+.mini-icon-btn {
+  -webkit-app-region: no-drag;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--mini-sub);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease, color 0.15s ease, opacity 0.15s ease, border-color 0.15s ease;
+  opacity: 0.7;
+}
+
+.mini-icon-btn:hover {
+  background: var(--mini-hover);
+  border-color: var(--mini-stroke-2);
+  color: var(--mini-text);
+  opacity: 1;
+}
+
+.mini-icon-btn:focus-visible {
+  outline: 2px solid rgba(var(--color-primary-rgb), 0.55);
+  outline-offset: 2px;
+}
+
+/* Body Content */
+.mini-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: clamp(18px, 7cqh, 26px) 6cqw clamp(10px, 5cqh, 18px);
+  gap: clamp(6px, 2.5cqh, 12px);
+  position: relative;
+  z-index: 1;
+}
+
+/* Timer Display */
+.mini-timer-display {
+  /* Clean sans-serif with tabular numbers for stability */
+  font-family: "Segoe UI Variable Display", "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+  font-weight: 600;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  
+  /* Responsive font size - enlarged for focus */
+  font-size: clamp(56px, 26cqw, 80px);
+  
+  color: var(--color-text-main);
+  width: 100%;
+  text-align: center;
+  cursor: default;
+  user-select: none;
+}
+
+/* Info Group */
+.mini-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  max-width: 90%;
+  text-align: center;
+}
+
+.mini-task-title {
+  font-size: clamp(12px, 4cqw, 13px);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.mini-mode-badge {
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+  font-weight: 600;
+  background: var(--mini-surface-2);
+  border: 1px solid var(--mini-stroke-2);
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+.mini-mode-pill {
+  margin-bottom: clamp(0px, 0.5cqh, 4px);
+}
+
+/* Controls */
+.mini-controls-large {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: auto;
+  -webkit-app-region: no-drag;
+}
+
+.mini-control-btn {
+  border: 1px solid transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease, color 0.15s ease, opacity 0.15s ease;
+}
+
+.mini-control-btn:focus-visible {
+  outline: 2px solid rgba(var(--color-primary-rgb), 0.55);
+  outline-offset: 2px;
+}
+
+/* Stop Button */
+.mini-control-btn.stop {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--mini-surface-2);
+  border-color: var(--mini-stroke-2);
+  color: var(--color-text-secondary);
+}
+
+.mini-control-btn.stop:hover {
+  background: var(--mini-hover);
+  border-color: var(--mini-stroke);
+  color: var(--color-text-main);
+  transform: scale(1.06);
+}
+
+/* Main Toggle Button (Default / Paused State - Prominent like Homepage) */
+.mini-control-btn.main-toggle {
+  width: 18cqw; /* Reduced proportional width */
+  height: 18cqw;
+  min-width: 44px;
+  min-height: 44px;
+  max-width: 64px;
+  max-height: 64px;
+  border-radius: 14px;
+
+  background: var(--mini-surface-2);
+  border-color: var(--mini-stroke-2);
+  color: var(--mini-primary);
+  box-shadow: none;
+}
+
+.mini-control-btn.main-toggle:hover {
+  transform: scale(1.02) translateY(-1px);
+  background: rgba(var(--color-primary-rgb), 0.1);
+  border-color: rgba(var(--color-primary-rgb), 0.22);
+}
+
+.mini-control-btn.main-toggle:active {
+  transform: scale(0.98);
+}
+
+.mini-control-btn.main-toggle.running {
+  background: rgba(var(--color-primary-rgb), 0.08);
+  border-color: rgba(var(--color-primary-rgb), 0.18);
+  color: var(--mini-primary);
+  box-shadow: none;
+}
+
+.mini-control-btn.main-toggle.running:hover {
+  background: rgba(var(--color-primary-rgb), 0.12);
+  border-color: rgba(var(--color-primary-rgb), 0.24);
+  transform: scale(1.02) translateY(-1px);
+}
+
+.mini-control-btn.main-toggle.running:active {
+  transform: scale(0.98);
+}
+
+/* Icon adjustments */
+.mini-control-btn svg {
+  stroke-width: 2.5px;
+}
+
+.mini-control-btn.main-toggle .play-icon {
+  margin-left: 3px; /* Optical center */
+}

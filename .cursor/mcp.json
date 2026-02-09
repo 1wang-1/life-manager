@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "pencil": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@pencil-pixel/mcp-server"
+      ]
+    }
+  }
+}

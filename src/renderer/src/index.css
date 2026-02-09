@@ -1,0 +1,94 @@
+/* 引入设计令牌系统 */
+@import './styles/tokens.css';
+@import './styles/base.css';
+@import './styles/animations.css';
+@import './styles/components.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body-size) / var(--font-body-height) 'Quicksand', 'Inter', system-ui, -apple-system, sans-serif;
+  color: var(--color-text-main);
+  background-color: var(--color-bg-main);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 {
+  font-size: var(--font-h1-size);
+  line-height: var(--font-h1-height);
+  font-weight: var(--font-h1-weight);
+  margin: 0;
+}
+
+h2 {
+  font-size: var(--font-h2-size);
+  line-height: var(--font-h2-height);
+  font-weight: var(--font-h2-weight);
+  margin: 0;
+}
+
+p, span, div {
+  font-size: var(--font-body-size);
+  line-height: var(--font-body-height);
+}
+
+.text-secondary {
+  font-size: var(--font-secondary-size);
+  line-height: var(--font-secondary-height);
+  color: var(--color-text-secondary);
+}
+
+.text-caption {
+  font-size: var(--font-caption-size);
+  line-height: var(--font-caption-height);
+  color: var(--color-text-secondary);
+}
+
+button {
+  font-family: inherit;
+  outline: none;
+  -webkit-app-region: no-drag;
+}
+
+input, textarea, select, a, [role="button"], .btn {
+  -webkit-app-region: no-drag;
+  user-select: text;
+  pointer-events: auto;
+}
+
+/* Global Scrollbar Styling */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1; /* slate-300 */
+  border-radius: 20px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #94a3b8; /* slate-400 */
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+

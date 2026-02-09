@@ -1,0 +1,37 @@
+.main-layout {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  --content-max-width: 1380px;
+  --page-padding: 0;
+  --player-bar-height: 0px;
+  background-color: var(--color-bg-main);
+  color: #1e293b;
+  overflow: hidden;
+}
+
+.main-layout.has-player-bar {
+  --player-bar-height: 80px;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  padding: var(--page-padding);
+  padding-bottom: calc(var(--page-padding) + var(--player-bar-height));
+  /* background-color removed */
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+}
+
+.main-content > .page-container {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+}

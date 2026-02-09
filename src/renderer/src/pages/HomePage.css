@@ -1,0 +1,1088 @@
+/* Global Page Reset */
+.page-container.home-page {
+  width: 100%;
+  padding: 32px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 1600px;
+  margin: 0 auto;
+  height: 100%;
+  background-color: var(--color-bg-main);
+  overflow: hidden;
+  position: relative;
+}
+
+.home-header-simple {
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.home-header-simple.page-header {
+  margin-bottom: 0;
+}
+
+.greeting .page-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-text-main);
+  margin: 0;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.greeting .page-subtitle {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  margin-top: 0.4rem;
+}
+
+/* Immersive Mode Styles */
+.page-container.home-page.immersive-mode {
+  background-color: #F7F8FA; /* Pseudo-white for relaxed focus */
+  max-width: none !important;
+  width: 100%;
+}
+
+.home-header-simple.hidden {
+  display: none;
+}
+
+/* In immersive mode, the hero card becomes transparent/borderless or fills screen */
+.immersive-mode .focus-hero {
+  box-shadow: none;
+  background-color: transparent;
+  /* Removed scale transform to fix button interactivity issues and excessive sizing */
+  max-width: none;
+  width: 100%;
+}
+
+.immersive-mode .timer-ring-container-large {
+  width: 500px; /* Slightly reduced from 540px to ensure fit */
+  height: 500px;
+}
+
+.immersive-mode .timer-time-input,
+.immersive-mode .timer-time {
+  font-size: 90px; /* Reduced from 110px */
+}
+
+.immersive-mode .hero-actions {
+  z-index: 10;
+  position: relative;
+  margin-top: 32px; /* Ensure spacing from ring */
+}
+
+.immersive-mode .current-task-display {
+  gap: 4px;
+}
+
+.immersive-mode .current-task-display .label {
+  font-size: 12px;
+  opacity: 0.5;
+}
+
+.immersive-mode .current-task-display .task-title {
+  font-size: 20px;
+  color: var(--color-text-secondary);
+  max-width: 600px;
+  font-weight: 500;
+}
+
+.immersive-mode .btn-hero-primary,
+.immersive-mode .btn-hero-start {
+  transform: scale(1.1);
+}
+
+.immersive-mode .btn-hero-primary:hover,
+.immersive-mode .btn-hero-start:hover {
+  transform: scale(1.15);
+}
+
+/* Hide Sidebar (Assumes Sidebar is outside HomePage but we can hide it via global class if needed, 
+   but for now we hide elements within HomePage and assume Layout handles external sidebar hiding 
+   or we make the page fullscreen absolute over everything) 
+*/
+/* Actually, to truly hide the sidebar which is in MainLayout, we might need a global state or 
+   make this page absolute positioned on top. For now, let's just clean up the internal UI. 
+*/
+
+.immersive-toggle-container {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.focus-hero:hover .immersive-toggle-container {
+  opacity: 1;
+}
+
+.immersive-mode .immersive-toggle-container {
+  opacity: 0.3;
+}
+
+.immersive-mode .immersive-toggle-container:hover {
+  opacity: 1;
+}
+
+/* Layout Grid */
+.home-grid-layout {
+  display: flex;
+  flex: 1;
+  height: 0; /* for overflow */
+  position: relative;
+  width: 100%;
+  overflow-y: auto; /* Allow scrolling to prevent overlap */
+}
+
+/* --- Main Zone (Center - Quiet Island) --- */
+.main-zone {
+  flex: 1;
+  display: flex;
+  /* justify-content: center;  Removed to fix vertical overflow on small screens */
+  /* align-items: center;      Removed to fix vertical overflow on small screens */
+  padding: 20px;
+  position: relative;
+  z-index: 10;
+  min-height: min-content; /* Ensure it can grow if needed */
+  overflow-y: auto; /* Ensure internal scroll if needed, though parent handles it usually */
+}
+
+.focus-hero {
+  /* Quiet Island Card Style */
+  margin: auto; /* Center vertically and horizontally, safe for scrolling */
+  width: 100%;
+  max-width: 480px;
+  min-height: auto;
+  height: auto;
+  background-color: #FFFFFF;
+  border-radius: 32px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.02); /* Very subtle shadow */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(16px, 4vw, 40px);
+  gap: clamp(12px, 3vh, 40px);
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.focus-hero-stack {
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 100%;
+  align-items: center;
+}
+
+.focus-hero-timer {
+  grid-area: 1 / 1 / 2 / 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(12px, 3vh, 40px);
+  width: 100%;
+}
+
+/* Current Task Display */
+.current-task-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  height: auto;
+  min-height: 60px;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.current-task-display .label {
+  font-size: 13px;
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.current-task-display .task-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text-main);
+  text-align: center;
+  margin: 0;
+  max-width: 360px;
+  line-height: 1.2;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.current-task-display .task-title.is-empty {
+  font-weight: 550;
+  color: var(--color-text-tertiary);
+}
+
+/* Timer Mode Switcher */
+.timer-mode-switcher {
+  display: flex;
+  gap: 4px;
+  background-color: var(--color-bg-main); /* #F1F5F9 */
+  padding: 4px;
+  border-radius: 12px;
+  /* margin-bottom removed as parent flex gap handles spacing */
+}
+
+.timer-mode-switcher.is-placeholder {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.mode-btn {
+  border: none;
+  background: transparent;
+  padding: 8px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mode-btn:hover {
+  color: var(--color-text-main);
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.mode-btn.active {
+  background-color: white;
+  color: var(--color-primary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  font-weight: 600;
+}
+
+/* Timer Ring */
+.timer-ring-container-large {
+  position: relative;
+  width: min(320px, 60vw, 45vh);
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.timer-ring-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.timer-ring-bg {
+  fill: none;
+  stroke: var(--gray-50); /* Very light gray for track */
+  stroke-width: 6;
+}
+
+.timer-ring-progress {
+  fill: none;
+  stroke-width: 6;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.5s ease-out;
+}
+
+/* Timer Time (The Stage) */
+.timer-center-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+}
+
+.timer-time {
+  appearance: none;
+  border: 1px solid transparent;
+  background: transparent;
+  font-family: inherit;
+  font-size: clamp(2.5rem, 10vw, 4rem);
+  font-weight: 300;
+  color: var(--color-text-main);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+  padding: 4px 12px;
+  border-radius: 16px;
+  transition: background-color 0.2s, border-color 0.2s, transform 0.2s;
+  user-select: none;
+}
+
+.timer-time.clickable {
+  cursor: pointer;
+}
+
+.timer-time.clickable:hover {
+  background-color: rgba(var(--color-primary-rgb), 0.08);
+  border-color: rgba(var(--color-primary-rgb), 0.18);
+  transform: scale(1.01);
+}
+
+.timer-time:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.28);
+}
+
+.timer-time:disabled {
+  cursor: default;
+  pointer-events: none;
+}
+
+/* Time Picker Embedded */
+.time-picker-embedded {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+  width: 100%;
+  animation: pickerFadeIn 0.2s ease-out;
+}
+
+@keyframes pickerFadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.preset-row {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.preset-row .action-chip {
+  flex: 0 0 auto;
+  min-width: 60px;
+  background: white; /* Card-like background for chips */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.04);
+}
+
+.preset-row .action-chip:hover {
+  background: white;
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.custom-time-form {
+  width: 100%;
+  max-width: 180px;
+}
+
+.custom-time-form input {
+  background: white;
+  border: 1px solid transparent;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.custom-time-form input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 4px 12px rgba(var(--color-primary-rgb), 0.15);
+  transform: translateY(-1px);
+}
+
+/* Quick Actions */
+.quick-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.action-chip {
+  padding: 6px 16px;
+  border-radius: 9999px;
+  background: rgba(0,0,0,0.04);
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.action-chip:hover {
+  background: rgba(0,0,0,0.08);
+  color: var(--color-text-main);
+}
+
+.action-chip.active {
+  background: var(--color-primary);
+  color: white;
+  box-shadow: 0 4px 12px rgba(var(--color-primary-rgb), 0.25);
+}
+
+.custom-time-form input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.custom-time-form input:focus {
+  border-color: var(--color-primary);
+}
+
+.timer-time-input {
+  font-size: clamp(2.5rem, 10vw, 4rem);
+  font-weight: 300;
+  color: var(--color-text-main);
+  width: min(200px, 50vw);
+  text-align: center;
+  border: none;
+  border-bottom: 2px solid var(--color-primary);
+  background: transparent;
+  outline: none;
+  font-family: inherit;
+  line-height: 1;
+  padding: 0;
+  margin: 0;
+}
+
+/* Main Action Button */
+.hero-actions {
+  margin-top: 16px;
+  height: 56px; /* Fixed height to prevent layout shift */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-hero-start {
+  height: 56px;
+  padding: 0 40px;
+  border-radius: 28px;
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  font-size: 18px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 8px 20px rgba(var(--color-primary-rgb), 0.25);
+}
+
+.btn-hero-start:hover {
+  background-color: var(--color-primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(var(--color-primary-rgb), 0.3);
+}
+
+.btn-hero-start:active {
+  transform: translateY(0);
+}
+
+/* Running Controls (Pause/Stop) */
+.running-controls {
+  display: flex;
+  gap: 16px;
+  animation: fadeIn 0.3s ease;
+}
+
+.btn-hero-primary {
+  height: 56px;
+  padding: 0 32px;
+  border-radius: 28px;
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  font-size: 16px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 8px 20px rgba(var(--color-primary-rgb), 0.25);
+}
+
+.btn-hero-primary:hover {
+  background-color: var(--color-primary-hover);
+  transform: translateY(-2px);
+}
+
+.btn-hero-secondary {
+  height: 56px;
+  padding: 0 24px;
+  border-radius: 28px;
+  background-color: white;
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+  font-size: 16px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-hero-secondary.is-dimmed {
+  opacity: 0.45;
+  filter: saturate(0.35);
+  box-shadow: none;
+}
+
+.btn-hero-secondary:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+  background-color: #fef2f2;
+}
+
+.btn-hero-secondary.is-neutral:hover {
+  border-color: var(--color-primary);
+  color: var(--color-text-main);
+  background-color: rgba(var(--color-primary-rgb), 0.08);
+  transform: translateY(-2px);
+}
+
+.btn-hero-secondary.is-neutral.is-dimmed:hover {
+  border-color: var(--color-border);
+  color: var(--color-text-secondary);
+  background-color: white;
+  transform: none;
+}
+
+.btn-hero-secondary.is-neutral:active {
+  transform: translateY(0);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Today Completed Feedback */
+.today-completed-feedback {
+  margin-top: auto; /* Push to bottom of card if flex space allows */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0.8;
+}
+
+.feedback-header {
+  font-size: 12px;
+  color: var(--color-text-tertiary);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.feedback-list {
+  display: flex;
+  gap: 16px;
+}
+
+.feedback-item {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  position: relative;
+  padding-left: 18px;
+}
+
+.feedback-item::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--color-primary);
+  font-weight: bold;
+}
+
+
+/* --- Right Zone (Todo Panel - Downgraded) --- */
+.right-zone-panel {
+  width: 320px;
+  height: 100%;
+  background: transparent; /* Downgraded from white */
+  /* No border */
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.panel-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.panel-header h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-tertiary); /* Lower contrast */
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+.btn-icon-ghost {
+  background: transparent;
+  border: none;
+  color: var(--color-text-tertiary);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.btn-icon-ghost:hover {
+  background: rgba(0,0,0,0.05);
+  color: var(--color-text-secondary);
+}
+
+.btn-text-ghost {
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: rgba(255, 255, 255, 0.6);
+  color: var(--color-text-tertiary);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.btn-text-ghost:hover {
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--color-text-secondary);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.btn-text-ghost.active {
+  color: var(--color-text-main);
+  border-color: rgba(var(--color-primary-rgb), 0.35);
+  background: rgba(var(--color-primary-rgb), 0.08);
+}
+
+.panel-content {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 16px;
+}
+
+.empty-todo-state {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  color: var(--color-text-tertiary);
+}
+
+.empty-todo-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.empty-todo-desc {
+  font-size: 13px;
+  opacity: 0.85;
+}
+
+.empty-todo-btn {
+  margin-top: 6px;
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(var(--color-primary-rgb), 0.25);
+  background: rgba(var(--color-primary-rgb), 0.08);
+  color: var(--color-primary);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.empty-todo-btn:hover {
+  background: rgba(var(--color-primary-rgb), 0.12);
+  border-color: rgba(var(--color-primary-rgb), 0.35);
+}
+
+.empty-todo-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.24);
+}
+
+.todo-list-compact {
+  display: flex;
+  flex-direction: column;
+  gap: 4px; /* Tight gap */
+}
+
+.today-done-list {
+  margin-top: 10px;
+}
+
+.today-done-divider {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.06);
+  margin: 10px 4px;
+}
+
+.todo-item-compact {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--color-text-secondary);
+  position: relative;
+  min-height: 40px;
+}
+
+.todo-item-compact.is-completed {
+  opacity: 0.85;
+}
+
+.todo-item-compact.is-completed .task-title {
+  text-decoration: line-through;
+}
+
+.todo-item-compact:hover {
+  background: rgba(255, 255, 255, 0.5);
+  color: var(--color-text-main);
+}
+
+.todo-item-compact:hover .item-hover-actions {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.todo-item-compact.active {
+  background: white;
+  color: var(--color-text-main);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  font-weight: 500;
+}
+
+.status-indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: currentColor; /* Inherits text color */
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+.todo-item-compact.active .status-indicator {
+  background-color: var(--color-primary);
+  opacity: 1;
+}
+
+.task-title {
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+}
+
+/* Hover Actions */
+.item-hover-actions {
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  margin-left: auto;
+}
+
+.btn-icon-small {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: var(--color-text-tertiary);
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s;
+}
+
+.btn-icon-small:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--color-text-main);
+}
+
+.btn-icon-small.danger:hover {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.btn-icon-small.success:hover {
+  color: #22c55e;
+  background: rgba(34, 197, 94, 0.1);
+}
+
+/* Edit Mode */
+.task-edit-mode {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.task-edit-mode input {
+  flex: 1;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 13px;
+  outline: none;
+  min-width: 0;
+}
+
+.task-edit-mode input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+/* Growth Feedback Styles */
+.growth-feedback-overlay {
+  position: relative;
+  /* Match the height of the timer ring to prevent layout shift, but fill width */
+  width: 100%;
+  height: min(320px, 60vw, 45vh);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.growth-feedback-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  animation: fadeIn 0.5s cubic-bezier(0.2, 0, 0, 1);
+  
+  /* Visual tweaks */
+  position: relative;
+  user-select: none;
+}
+
+/* Add active state for immediate visual feedback */
+.growth-feedback-card:active {
+  transform: scale(0.98);
+  opacity: 0.9;
+  transition: transform 0.1s ease, opacity 0.1s ease;
+}
+
+.growth-icon-wrapper {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(16, 185, 129, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.growth-icon {
+  font-size: 32px;
+}
+
+.growth-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-text-main);
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+}
+
+.growth-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+
+.growth-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  color: var(--color-text-secondary);
+}
+
+.success-icon {
+  color: #10B981; /* Green */
+}
+
+.time-highlight {
+  font-weight: 500;
+  color: var(--color-text-main);
+}
+
+.growth-hint {
+  font-size: 13px;
+  color: var(--color-text-tertiary);
+  opacity: 0.6;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.edit-actions {
+  display: flex;
+  gap: 2px;
+}
+
+.panel-footer-input input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+  font-size: 13px;
+  outline: none;
+  transition: all 0.2s;
+  color: var(--color-text-secondary);
+}
+
+.panel-footer-input input.has-error {
+  border-color: rgba(239, 68, 68, 0.65);
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--color-text-main);
+}
+
+.panel-footer-error {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #ef4444;
+  line-height: 1.2;
+}
+
+.panel-footer-input input:focus {
+  background: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  color: var(--color-text-main);
+}
+
+.panel-footer-input input::placeholder {
+  color: var(--color-text-tertiary);
+}
+
+/* Collapsed Panel Trigger */
+.collapsed-panel-trigger {
+  width: 40px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.collapsed-panel-trigger:hover {
+  background: rgba(0,0,0,0.02);
+}
+
+.trigger-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: var(--color-text-tertiary);
+}
+
+.vertical-text {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .home-grid-layout {
+    flex-direction: column;
+    overflow-y: auto;
+    /* height: auto;  Removed to prevent overflow clipping by parent */
+  }
+  
+  .main-zone {
+    padding: 24px;
+    min-height: auto; /* Allow shrinking */
+    display: block; /* Switch to block to stack properly if needed, but flex column is fine too */
+    overflow-y: visible; /* Let parent handle scrolling on mobile */
+  }
+
+  .focus-hero {
+    margin: 0 auto 24px auto; /* Center horizontally, add bottom margin */
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    min-height: auto;
+  }
+  
+  .right-zone-panel {
+    width: 100%;
+    height: auto;
+    max-height: 400px;
+    padding: 0 24px 24px;
+  }
+
+  .timer-ring-container-large {
+    width: min(280px, 60vw);
+  }
+}

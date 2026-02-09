@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>本周成长 - 参考图复刻 (六阶段)</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #070A10;
+            padding: 60px 24px;
+            color: #E2E8F0;
+        }
+        h1 { margin: 0 0 8px; color: #F8FAFC; font-size: 18px; font-weight: 700; }
+        p.subtitle { margin: 0 0 34px; color: #94A3B8; font-size: 13px; font-weight: 600; }
+
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            width: min(980px, 100%);
+            margin: 16px 0 44px;
+        }
+
+        .stage-image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            width: min(980px, 100%);
+            margin: 10px 0 44px;
+        }
+
+        .icon-card {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            border-radius: 16px;
+            box-shadow: 0 10px 26px rgba(0, 0, 0, 0.35);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            height: 100%;
+            min-height: 240px;
+        }
+
+        .icon-card .image-wrapper {
+            width: 160px;
+            height: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 10px;
+        }
+
+        .icon-card img {
+            display: block;
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            image-rendering: high-quality;
+        }
+
+        .icon-card svg {
+            display: block;
+            width: 128px;
+            height: 128px;
+        }
+
+        .icon-label {
+            font-size: 13px;
+            font-weight: 800;
+            color: #F8FAFC;
+            letter-spacing: 0.2px;
+            text-align: center;
+        }
+
+        .icon-desc {
+            font-size: 12px;
+            color: #94A3B8;
+            line-height: 1.4;
+            text-align: center;
+        }
+        
+        .timeline-container {
+            display: flex;
+            gap: 26px;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 1200px;
+        }
+
+        .stage {
+            width: 150px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .icon-box {
+            width: 140px;
+            height: 120px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .stage-name {
+            margin-top: 10px;
+            font-size: 18px;
+            font-weight: 800;
+            color: #94A3B8;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 0 rgba(0,0,0,0.75);
+            -webkit-text-stroke: 1px rgba(15, 23, 42, 0.9);
+        }
+
+        svg {
+            overflow: visible;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>参考图复刻（六阶段）</h1>
+    <p class="subtitle">准备中 → 萌芽 → 生长 → 树苗 → 小树 → 茂盛</p>
+
+    <h1 style="margin-top: 10px;">阶段图片（你选定的原图）</h1>
+    <p class="subtitle" style="margin-bottom: 14px;">当前读取 public/growth-stages/stage_0~5.png</p>
+
+    <div class="stage-image-grid">
+        <div class="icon-card">
+            <div class="image-wrapper">
+                <img data-stage-image="stage_0.png" alt="阶段0 - 准备中" style="transform: translateY(-15px);" />
+            </div>
+            <div class="icon-label">准备中</div>
+            <div class="icon-desc">stage_0.png</div>
+        </div>
+
+        <div class="icon-card">
+            <div class="image-wrapper">
+                <img data-stage-image="stage_1.png" alt="阶段1 - 萌芽" style="transform: translateY(15px);" />
+            </div>
+            <div class="icon-label">萌芽</div>
+            <div class="icon-desc">stage_1.png</div>
+        </div>
+
+        <div class="icon-card">
+            <div class="image-wrapper">
+                <img data-stage-image="stage_2.png" alt="阶段2 - 生长" />
+            </div>
+            <div class="icon-label">生长</div>
+            <div class="icon-desc">stage_2.png</div>
+        </div>
+
+        <div class="icon-card">
+            <div class="image-wrapper">
+                <img data-stage-image="stage_3.png" alt="阶段3 - 树苗" />
+            </div>
+            <div class="icon-label">树苗</div>
+            <div class="icon-desc">stage_3.png</div>
+        </div>
+
+        <div class="icon-card">
+            <div class="image-wrapper">
+                <img data-stage-image="stage_4.png" alt="阶段4 - 小树" />
+            </div>
+            <div class="icon-label">小树</div>
+            <div class="icon-desc">stage_4.png</div>
+        </div>
+
+        <div class="icon-card">
+            <div class="image-wrapper">
+                <img data-stage-image="stage_5.png" alt="阶段5 - 茂盛" />
+            </div>
+            <div class="icon-label">茂盛</div>
+            <div class="icon-desc">stage_5.png</div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            const isFile = window.location.protocol === 'file:';
+            const httpPrefix = '/growth-stages/';
+            const filePrefix = './public/growth-stages/';
+
+            document.querySelectorAll('img[data-stage-image]').forEach((img) => {
+                const fileName = img.getAttribute('data-stage-image');
+                if (!fileName) return;
+
+                const primary = (isFile ? filePrefix : httpPrefix) + fileName;
+                const fallback = (isFile ? httpPrefix : filePrefix) + fileName;
+
+                img.decoding = 'async';
+                img.loading = 'eager';
+                img.src = primary;
+                img.onerror = () => {
+                    if (img.src.endsWith(fallback)) return;
+                    img.src = fallback;
+                };
+            });
+        })();
+    </script>
+
+    <h1 style="margin-top: 10px;">应用图标候选：倒计时 / 行动箭头</h1>
+    <p class="subtitle" style="margin-bottom: 14px;">桌面图标建议固定品牌色（不随应用主题变化），更易识别，也不会像番茄钟那样“红”。</p>
+
+    <div class="icon-grid">
+        <div class="icon-card">
+            <svg width="128" height="128" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="tech_blue" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#3B82F6"/>
+                        <stop offset="100%" stop-color="#1D4ED8"/>
+                    </linearGradient>
+                    <filter id="shadow_blue" x="-20%" y="-20%" width="140%" height="140%">
+                        <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#1E3A8A" flood-opacity="0.4"/>
+                    </filter>
+                </defs>
+                <rect width="512" height="512" rx="112" fill="url(#tech_blue)"/>
+                <circle cx="256" cy="256" r="140" stroke="white" stroke-width="48" stroke-opacity="0.25"/>
+                <circle cx="256" cy="256" r="90" fill="white"/>
+                <g filter="url(#shadow_blue)">
+                    <path d="M256 256 L350 150" stroke="#1D4ED8" stroke-width="40" stroke-linecap="round"/>
+                    <path d="M350 150 L310 150 L350 150 L350 190" stroke="#1D4ED8" stroke-width="40" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="256" cy="256" r="24" fill="#1D4ED8"/>
+                </g>
+            </svg>
+            <div class="icon-label">科技蓝（推荐）</div>
+            <div class="icon-desc">更像倒计时/效率工具，不会让人联想到番茄钟</div>
+        </div>
+
+        <div class="icon-card">
+            <svg width="128" height="128" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="obsidian" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#334155"/>
+                        <stop offset="100%" stop-color="#0F172A"/>
+                    </linearGradient>
+                </defs>
+                <rect width="512" height="512" rx="112" fill="url(#obsidian)"/>
+                <circle cx="256" cy="256" r="140" stroke="white" stroke-width="48" stroke-opacity="0.16"/>
+                <circle cx="256" cy="256" r="90" fill="white"/>
+                <path d="M256 256 L350 150" stroke="#0F172A" stroke-width="40" stroke-linecap="round"/>
+                <path d="M350 150 L310 150 L350 150 L350 190" stroke="#0F172A" stroke-width="40" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="256" cy="256" r="24" fill="#0F172A"/>
+            </svg>
+            <div class="icon-label">黑曜石（中性）</div>
+            <div class="icon-desc">任何主题都不冲突，观感最“系统工具”</div>
+        </div>
+
+        <div class="icon-card">
+            <svg width="128" height="128" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="purple_dream" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#A855F7"/>
+                        <stop offset="100%" stop-color="#7E22CE"/>
+                    </linearGradient>
+                </defs>
+                <rect width="512" height="512" rx="112" fill="url(#purple_dream)"/>
+                <circle cx="256" cy="256" r="140" stroke="white" stroke-width="48" stroke-opacity="0.25"/>
+                <circle cx="256" cy="256" r="90" fill="white"/>
+                <path d="M256 256 L350 150" stroke="#7E22CE" stroke-width="40" stroke-linecap="round"/>
+                <path d="M350 150 L310 150 L350 150 L350 190" stroke="#7E22CE" stroke-width="40" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="256" cy="256" r="24" fill="#7E22CE"/>
+            </svg>
+            <div class="icon-label">灵感紫</div>
+            <div class="icon-desc">更活泼但不焦虑，仍然不像番茄钟</div>
+        </div>
+    </div>
+    
+    <div class="timeline-container">
+        
+        <div class="stage">
+            <div class="icon-box">
+                <svg width="120" height="120" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="soil-prep" x1="10" y1="34" x2="38" y2="44" gradientUnits="userSpaceOnUse">
+                            <stop offset="0" stop-color="#D8C3A6" />
+                            <stop offset="0.55" stop-color="#C2A687" />
+                            <stop offset="1" stop-color="#A7896B" />
+                        </linearGradient>
+                        <linearGradient id="metal-prep" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0" stop-color="#E8EEF6" />
+                            <stop offset="0.55" stop-color="#B7C3D4" />
+                            <stop offset="1" stop-color="#7E8A9A" />
+                        </linearGradient>
+                    </defs>
+
+                    <path d="M6 42 C 12 39, 19 38, 24 38 C 29 38, 36 39, 42 42 C 36 44, 30 45, 24 45 C 18 45, 12 44, 6 42 Z" fill="#2F3741" opacity="0.9" />
+                    <path d="M10 41 C 14 39.6, 18.8 39.2, 24 39.2 C 29 39.2, 33.8 39.6, 38 41 C 33.3 41.8, 28.7 42.2, 24 42.2 C 19.3 42.2, 14.7 41.8, 10 41 Z" fill="#6B7C8A" opacity="0.35" />
+
+                    <path d="M8 41 C 12 34, 18 32, 24 32 C 30 32, 36 34, 40 41 C 34 43, 28.5 44, 24 44 C 19.5 44, 14 43, 8 41 Z" fill="url(#soil-prep)" stroke="#2F3A45" stroke-width="1.6" stroke-linejoin="round" />
+                    <path d="M15 36 C 16.5 35, 18 35, 19.5 36" stroke="#2F3A45" stroke-opacity="0.35" stroke-width="1" stroke-linecap="round" />
+                    <path d="M27 37 C 28.5 36, 30 36, 31.5 37" stroke="#2F3A45" stroke-opacity="0.3" stroke-width="1" stroke-linecap="round" />
+
+                    <path d="M30.5 10.5 C 32.3 10.1, 34.2 10.6, 35.4 11.7 C 36.5 12.8, 36.9 14.6, 36.4 16.3 C 35.5 19.5, 33.6 24.6, 31.8 29.2" fill="none" stroke="#2F3A45" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M30.3 11.1 L 35.2 12.5 L 31.5 29.6 L 26.6 28.2 Z" fill="#C69A6C" stroke="#2F3A45" stroke-width="1.4" stroke-linejoin="round" />
+                    <path d="M24.5 27.2 L 32.4 29.4 L 30.8 36.5 C 29.4 38.6, 26.8 39.5, 24.6 38.8 C 22.4 38.1, 21.1 36, 21.7 33.8 Z" fill="url(#metal-prep)" stroke="#2F3A45" stroke-width="1.4" stroke-linejoin="round" />
+                    <circle cx="33.2" cy="14" r="1.05" fill="#7E8A9A" opacity="0.6" />
+                </svg>
+            </div>
+            <div class="stage-name">准备中</div>
+        </div>
+
+        <div class="stage">
+            <div class="icon-box">
+                <svg width="120" height="120" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="leaf-sprout" x1="18" y1="22" x2="30" y2="34" gradientUnits="userSpaceOnUse">
+                            <stop offset="0" stop-color="#CFEBC6" />
+                            <stop offset="0.7" stop-color="#A9D9A3" />
+                            <stop offset="1" stop-color="#79B77A" />
+                        </linearGradient>
+                        <linearGradient id="soil-sprout" x1="16" y1="34" x2="32" y2="44" gradientUnits="userSpaceOnUse">
+                            <stop offset="0" stop-color="#C2A687" />
+                            <stop offset="1" stop-color="#A7896B" />
+                        </linearGradient>
+                    </defs>
+
+                    <path d="M6 42 C 12 39, 19 38, 24 38 C 29 38, 36 39, 42 42 C 36 44, 30 45, 24 45 C 18 45, 12 44, 6 42 Z" fill="#2F3741" opacity="0.85" />
+                    <path d="M10 41 C 14 39.6, 18.8 39.2, 24 39.2 C 29 39.2, 33.8 39.6, 38 41 C 33.3 41.8, 28.7 42.2, 24 42.2 C 19.3 42.2, 14.7 41.8, 10 41 Z" fill="#6B7C8A" opacity="0.33" />
+
+                    <path d="M16 42 C 18.5 36.8, 21.6 35, 24 35 C 26.4 35, 29.5 36.8, 32 42 C 29.5 43, 26.8 43.5, 24 43.5 C 21.2 43.5, 18.5 43, 16 42 Z" fill="url(#soil-sprout)" stroke="#2F3A45" stroke-width="1.5" stroke-linejoin="round" />
+
+                    <path d="M24 36.6 C 24 33.8, 24 31.4, 24 29" stroke="#2F3A45" stroke-width="1.5" stroke-linecap="round" />
+                    <path d="M24 30 C 21.7 28.8, 19.3 26.9, 18.2 24.6 C 17.2 22.5, 18.5 20.9, 20.7 21.4 C 22.9 21.9, 24.2 24.2, 24.7 26.2 C 25 27.4, 25 28.8, 24 30 Z" fill="url(#leaf-sprout)" stroke="#2F3A45" stroke-width="1.4" stroke-linejoin="round" />
+                    <path d="M24 30 C 26.3 28.8, 28.7 26.9, 29.8 24.6 C 30.8 22.5, 29.5 20.9, 27.3 21.4 C 25.1 21.9, 23.8 24.2, 23.3 26.2 C 23 27.4, 23 28.8, 24 30 Z" fill="url(#leaf-sprout)" stroke="#2F3A45" stroke-width="1.4" stroke-linejoin="round" />
+                    <path d="M21.2 25.8 C 22.4 26.1, 23.4 26.7, 24 27.8" stroke="#2F3A45" stroke-opacity="0.28" stroke-width="1" stroke-linecap="round" />
+                    <path d="M26.8 25.8 C 25.6 26.1, 24.6 26.7, 24 27.8" stroke="#2F3A45" stroke-opacity="0.28" stroke-width="1" stroke-linecap="round" />
+                </svg>
+            </div>
+            <div class="stage-name">萌芽</div>
+        </div>
+
+        <div class="stage">
+            <div class="icon-box">
+                <svg width="120" height="120" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="leaf-growth" x1="16" y1="16" x2="32" y2="34" gradientUnits="userSpaceOnUse">
+                            <stop offset="0" stop-color="#CFEBC6" />
+                            <stop offset="0.65" stop-color="#A9D9A3" />
+                            <stop offset="1" stop-color="#79B77A" />
+                        </linearGradient>
+                    </defs>
+
+                    <path d="M6 42 C 12 39, 19 38, 24 38 C 29 38, 36 39, 42 42 C 36 44, 30 45, 24 45 C 18 45, 12 44, 6 42 Z" fill="#2F3741" opacity="0.9" />
+                    <path d="M10 41 C 14 39.6, 18.8 39.2, 24 39.2 C 29 39.2, 33.8 39.6, 38 41 C 33.3 41.8, 28.7 42.2, 24 42.2 C 19.3 42.2, 14.7 41.8, 10 41 Z" fill="#6B7C8A" opacity="0.35" />
+
+                    <path d="M24 41 V 24" stroke="#2F3A45" stroke-width="1.6" stroke-linecap="round" />
+                    <path d="M24 27 C 19.8 26, 15.8 23.3, 14.2 20.2 C 12.7 17.2, 15.3 15.5, 18.2 16.5 C 21.1 17.6, 23.2 20.6, 24.1 23.1 C 24.7 24.8, 24.8 26, 24 27 Z" fill="url(#leaf-growth)" stroke="#2F3A45" stroke-width="1.4" stroke-linejoin="round" />
+                    <path d="M24 27 C 28.2 26, 32.2 23.3, 33.8 20.2 C 35.3 17.2, 32.7 15.5, 29.8 16.5 C 26.9 17.6, 24.8 20.6, 23.9 23.1 C 23.3 24.8, 23.2 26, 24 27 Z" fill="url(#leaf-growth)" stroke="#2F3A45" stroke-width="1.4" stroke-linejoin="round" />
+                    <path d="M20.2 21.3 C 21.5 21.8, 22.6 22.7, 23.2 24" stroke="#2F3A45" stroke-opacity="0.26" stroke-width="1" stroke-linecap="round" />
+                    <path d="M27.8 21.3 C 26.5 21.8, 25.4 22.7, 24.8 24" stroke="#2F3A45" stroke-opacity="0.26" stroke-width="1" stroke-linecap="round" />
+                </svg>
+            </div>
+            <div class="stage-name">生长</div>
+        </div>
+
+        <div class="stage">
+            <div class="icon-box">
+                <svg width="120" height="120" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="leaf-sapling" x1="14" y1="14" x2="34" y2="34" gradientUnits="userSpaceOnUse">
+                            <stop offset="0" stop-color="#CFEBC6" />
+                            <stop offset="0.62" stop-color="#A9D9A3" />
+                            <stop offset="1" stop-color="#79B77A" />
+                        </linearGradient>
+                    </defs>
+
+                    <path d="M6 42 C 12 39, 19 38, 24 38 C 29 38, 36 39, 42 42 C 36 44, 30 45, 24 45 C 18 45, 12 44, 6 42 Z" fill="#2F3741" opacity="0.9" />
+                    <path d="M10 41 C 14 39.6, 18.8 39.2, 24 39.2 C 29 39.2, 33.8 39.6, 38 41 C 33.3 41.8, 28.7 42.2, 24 42.2 C 19.3 42.2, 14.7 41.8, 10 41 Z" fill="#6B7C8A" opacity="0.35" />
+
+                    <path d="M24 41 V 20" stroke="#2F3A45" stroke-width="1.7" stroke-linecap="round" />
+
+                    <path d="M24 28 C 19.6 26.8, 15.7 24, 14 20.6 C 12.6 17.8, 15.1 16, 18 17.1 C 21 18.3, 23.1 21.4, 24.1 23.9 C 24.8 25.6, 24.9 27.1, 24 28 Z" fill="url(#leaf-sapling)" stroke="#2F3A45" stroke-width="1.35" stroke-linejoin="round" />
+                    <path d="M24 28 C 28.4 26.8, 32.3 24, 34 20.6 C 35.4 17.8, 32.9 16, 30 17.1 C 27 18.3, 24.9 21.4, 23.9 23.9 C 23.2 25.6, 23.1 27.1, 24 28 Z" fill="url(#leaf-sapling)" stroke="#2F3A45" stroke-width="1.35" stroke-linejoin="round" />
+                    <path d="M24 20.8 C 20.8 20.1, 17.6 18.1, 16.2 15.6 C 15 13.5, 16.9 12.2, 19.2 13 C 21.6 13.9, 23.2 16.4, 24 18.3 C 24.5 19.6, 24.6 20.3, 24 20.8 Z" fill="url(#leaf-sapling)" stroke="#2F3A45" stroke-width="1.25" stroke-linejoin="round" />
+                    <path d="M24 20.8 C 27.2 20.1, 30.4 18.1, 31.8 15.6 C 33 13.5, 31.1 12.2, 28.8 13 C 26.4 13.9, 24.8 16.4, 24 18.3 C 23.5 19.6, 23.4 20.3, 24 20.8 Z" fill="url(#leaf-sapling)" stroke="#2F3A45" stroke-width="1.25" stroke-linejoin="round" />
+                    <path d="M19.8 19.3 C 21.2 19.7, 22.4 20.5, 23.1 21.7" stroke="#2F3A45" stroke-opacity="0.22" stroke-width="1" stroke-linecap="round" />
+                    <path d="M28.2 19.3 C 26.8 19.7, 25.6 20.5, 24.9 21.7" stroke="#2F3A45" stroke-opacity="0.22" stroke-width="1" stroke-linecap="round" />
+                </svg>
+            </div>
+            <div class="stage-name">树苗</div>
+        </div>
+
+        <div class="stage">
+            <div class="icon-box">
+                <svg width="120" height="120" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <radialGradient id="canopy-tree" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(18 14) rotate(35) scale(24 20)">
+                            <stop offset="0" stop-color="#BEE7B0" />
+                            <stop offset="0.55" stop-color="#94D19A" />
+                            <stop offset="1" stop-color="#5FAF74" />
+                        </radialGradient>
+                        <linearGradient id="trunk-tree" x1="22" y1="18" x2="28" y2="44" gradientUnits="userSpaceOnUse">
+                            <stop offset="0" stop-color="#C69A6C" />
+                            <stop offset="1" stop-color="#9C6E45" />
+                        </linearGradient>
+                    </defs>
+
+                    <path d="M6 42 C 12 39, 19 38, 24 38 C 29 38, 36 39, 42 42 C 36 44, 30 45, 24 45 C 18 45, 12 44, 6 42 Z" fill="#2F3741" opacity="0.9" />
+                    <path d="M10 41 C 14 39.6, 18.8 39.2, 24 39.2 C 29 39.2, 33.8 39.6, 38 41 C 33.3 41.8, 28.7 42.2, 24 42.2 C 19.3 42.2, 14.7 41.8, 10 41 Z" fill="#6B7C8A" opacity="0.35" />
+
+                    <path d="M24 20 C 18 20, 14 24.2, 14 29.2 C 14 34.8, 18.7 38, 24 38 C 29.3 38, 34 34.8, 34 29.2 C 34 24.2, 30 20, 24 20 Z" fill="url(#canopy-tree)" stroke="#2F3A45" stroke-width="1.6" stroke-linejoin="round" />
+                    <path d="M18 28 C 20 26.4, 22 26.2, 24 28" stroke="#2F3A45" stroke-opacity="0.18" stroke-width="1" stroke-linecap="round" />
+                    <path d="M24 26.4 C 26.2 25.4, 28.2 25.8, 30 27.6" stroke="#2F3A45" stroke-opacity="0.16" stroke-width="1" stroke-linecap="round" />
+                    <path d="M22 41 V 28.5 C 22 26.9, 23.2 25.8, 24.8 25.8 C 26.4 25.8, 27.6 26.9, 27.6 28.5 V 41" fill="url(#trunk-tree)" stroke="#2F3A45" stroke-width="1.6" stroke-linejoin="round" />
+                </svg>
+            </div>
+            <div class="stage-name">小树</div>
+        </div>
+
+        <div class="stage">
+            <div class="icon-box">
+                <svg width="120" height="120" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <radialGradient id="canopy-forest" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(18 13) rotate(30) scale(26 22)">
+                            <stop offset="0" stop-color="#BEE7B0" />
+                            <stop offset="0.5" stop-color="#94D19A" />
+                            <stop offset="1" stop-color="#5FAF74" />
+                        </radialGradient>
+                        <linearGradient id="trunk-forest" x1="22" y1="18" x2="30" y2="44" gradientUnits="userSpaceOnUse">
+                            <stop offset="0" stop-color="#C69A6C" />
+                            <stop offset="1" stop-color="#9C6E45" />
+                        </linearGradient>
+                    </defs>
+
+                    <path d="M6 42 C 12 39, 19 38, 24 38 C 29 38, 36 39, 42 42 C 36 44, 30 45, 24 45 C 18 45, 12 44, 6 42 Z" fill="#2F3741" opacity="0.9" />
+                    <path d="M10 41 C 14 39.6, 18.8 39.2, 24 39.2 C 29 39.2, 33.8 39.6, 38 41 C 33.3 41.8, 28.7 42.2, 24 42.2 C 19.3 42.2, 14.7 41.8, 10 41 Z" fill="#6B7C8A" opacity="0.35" />
+
+                    <path d="M24 18.5 C 16.5 18.5, 11 24.2, 11 30.4 C 11 37.2, 17 40.6, 24 40.6 C 31 40.6, 37 37.2, 37 30.4 C 37 24.2, 31.5 18.5, 24 18.5 Z" fill="url(#canopy-forest)" stroke="#2F3A45" stroke-width="1.7" stroke-linejoin="round" />
+                    <path d="M14.5 29 C 16.2 27.2, 18.7 26.3, 21 27.8" stroke="#2F3A45" stroke-opacity="0.14" stroke-width="1" stroke-linecap="round" />
+                    <path d="M22.5 25.5 C 25.2 24.2, 28.2 24.5, 30.4 26.6" stroke="#2F3A45" stroke-opacity="0.14" stroke-width="1" stroke-linecap="round" />
+                    <path d="M18.5 34.2 C 20.2 32.9, 22 32.6, 24.2 34" stroke="#2F3A45" stroke-opacity="0.12" stroke-width="1" stroke-linecap="round" />
+                    <g opacity="0.22">
+                        <path d="M15.5 22.8 C 14.2 24.1, 13.4 25.5, 13 26.8" stroke="#2F3A45" stroke-width="1" stroke-linecap="round" />
+                        <path d="M31.8 21.8 C 34 23.4, 35.4 25.2, 35.8 27.2" stroke="#2F3A45" stroke-width="1" stroke-linecap="round" />
+                    </g>
+
+                    <path d="M21.2 41 V 27.2 C 21.2 25.1, 22.9 23.4, 25 23.4 C 27.1 23.4, 28.8 25.1, 28.8 27.2 V 41" fill="url(#trunk-forest)" stroke="#2F3A45" stroke-width="1.7" stroke-linejoin="round" />
+                    <path d="M24.8 27.8 C 22.6 30.2, 20.6 31.5, 18.8 33.3" stroke="#2F3A45" stroke-opacity="0.22" stroke-width="1.2" stroke-linecap="round" />
+                    <path d="M25.2 27.6 C 27.3 30, 29.4 31.2, 31.4 33" stroke="#2F3A45" stroke-opacity="0.22" stroke-width="1.2" stroke-linecap="round" />
+                </svg>
+            </div>
+            <div class="stage-name">茂盛</div>
+        </div>
+
+    </div>
+
+</body>
+</html>

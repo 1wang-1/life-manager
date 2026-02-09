@@ -1,0 +1,21 @@
+<svg width="256" height="256" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient id="leaf-sprout" x1="18" y1="22" x2="30" y2="34" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#CFEBC6" />
+            <stop offset="0.7" stop-color="#A9D9A3" />
+            <stop offset="1" stop-color="#79B77A" />
+        </linearGradient>
+        <linearGradient id="soil-sprout" x1="16" y1="34" x2="32" y2="44" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#C2A687" />
+            <stop offset="1" stop-color="#A7896B" />
+        </linearGradient>
+    </defs>
+    <path d="M6 42 C 12 39, 19 38, 24 38 C 29 38, 36 39, 42 42 C 36 44, 30 45, 24 45 C 18 45, 12 44, 6 42 Z" fill="#2F3741" opacity="0.85" />
+    <path d="M10 41 C 14 39.6, 18.8 39.2, 24 39.2 C 29 39.2, 33.8 39.6, 38 41 C 33.3 41.8, 28.7 42.2, 24 42.2 C 19.3 42.2, 14.7 41.8, 10 41 Z" fill="#6B7C8A" opacity="0.33" />
+    <path d="M16 42 C 18.5 36.8, 21.6 35, 24 35 C 26.4 35, 29.5 36.8, 32 42 C 29.5 43, 26.8 43.5, 24 43.5 C 21.2 43.5, 18.5 43, 16 42 Z" fill="url(#soil-sprout)" stroke="#2F3A45" stroke-width="1.5" stroke-linejoin="round" />
+    <path d="M24 36.6 C 24 33.8, 24 31.4, 24 29" stroke="#2F3A45" stroke-width="1.5" stroke-linecap="round" />
+    <path d="M24 30 C 21.7 28.8, 19.3 26.9, 18.2 24.6 C 17.2 22.5, 18.5 20.9, 20.7 21.4 C 22.9 21.9, 24.2 24.2, 24.7 26.2 C 25 27.4, 25 28.8, 24 30 Z" fill="url(#leaf-sprout)" stroke="#2F3A45" stroke-width="1.4" stroke-linejoin="round" />
+    <path d="M24 30 C 26.3 28.8, 28.7 26.9, 29.8 24.6 C 30.8 22.5, 29.5 20.9, 27.3 21.4 C 25.1 21.9, 23.8 24.2, 23.3 26.2 C 23 27.4, 23 28.8, 24 30 Z" fill="url(#leaf-sprout)" stroke="#2F3A45" stroke-width="1.4" stroke-linejoin="round" />
+    <path d="M21.2 25.8 C 22.4 26.1, 23.4 26.7, 24 27.8" stroke="#2F3A45" stroke-opacity="0.28" stroke-width="1" stroke-linecap="round" />
+    <path d="M26.8 25.8 C 25.6 26.1, 24.6 26.7, 24 27.8" stroke="#2F3A45" stroke-opacity="0.28" stroke-width="1" stroke-linecap="round" />
+</svg>

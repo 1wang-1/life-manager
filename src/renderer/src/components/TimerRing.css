@@ -1,0 +1,96 @@
+.timer-ring-wrapper {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.timer-component-svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(0deg); /* Fixed ring */
+}
+
+/* Ticks Variant Styles */
+.timer-tick {
+  stroke: var(--color-border); /* Inactive color */
+  stroke-width: 2px;
+  stroke-linecap: round;
+  transition: stroke 200ms ease, opacity 200ms ease;
+  opacity: 0.3;
+}
+
+/* Active state - Running */
+.timer-tick.active {
+  stroke: var(--color-primary);
+  opacity: 1;
+}
+
+/* Paused State */
+.timer-ring-wrapper.paused .timer-tick.active {
+  stroke: var(--color-text-secondary); /* Lower intensity when paused */
+  opacity: 0.5;
+}
+
+/* Finished State */
+.timer-ring-wrapper.finished .timer-tick.active {
+  stroke: var(--color-success);
+  opacity: 1;
+}
+
+/* Idle State - maybe empty or all gray */
+.timer-ring-wrapper.idle .timer-tick.active {
+  stroke: var(--color-border);
+  opacity: 0.3;
+}
+
+/* Ring Variant Styles */
+.timer-ring-circle-bg {
+  stroke: var(--color-border);
+  opacity: 0.3;
+  transition: stroke 200ms ease;
+}
+
+.timer-ring-circle {
+  stroke: var(--color-primary);
+  opacity: 1;
+  transition: stroke-dashoffset 200ms linear, stroke 200ms ease;
+}
+
+/* Paused State */
+.timer-ring-wrapper.paused .timer-ring-circle {
+  stroke: var(--color-text-secondary);
+  opacity: 0.5;
+}
+
+/* Finished State */
+.timer-ring-wrapper.finished .timer-ring-circle {
+  stroke: var(--color-success);
+}
+
+@media (prefers-color-scheme: dark) {
+  .timer-tick {
+    stroke: rgba(255, 255, 255, 0.1);
+  }
+  
+  .timer-tick.active {
+    stroke: var(--color-primary);
+  }
+  
+  .timer-ring-wrapper.paused .timer-tick.active {
+    stroke: rgba(255, 255, 255, 0.4);
+  }
+
+  /* Dark mode for ring */
+  .timer-ring-circle-bg {
+    stroke: rgba(255, 255, 255, 0.1);
+  }
+  
+  .timer-ring-wrapper.paused .timer-ring-circle {
+     stroke: rgba(255, 255, 255, 0.4);
+  }
+}
