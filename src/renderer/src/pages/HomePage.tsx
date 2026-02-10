@@ -284,9 +284,9 @@ export default function HomePage() {
       // Fill up every 60 seconds (1 minute ring)
       return (elapsedTime % 60) / 60;
     }
-    // Countdown: Fill up as time passes
+    // Countdown: Decrease as time passes (Start Full -> End Empty)
     if (totalDuration === 0) return 0;
-    return Math.min(1, Math.max(0, (totalDuration - remainingTime) / totalDuration));
+    return Math.min(1, Math.max(0, remainingTime / totalDuration));
   }, [mode, elapsedTime, remainingTime, totalDuration]);
 
   const displayTime = mode === 'stopwatch' ? elapsedTime : remainingTime;

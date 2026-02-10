@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
-import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay, addMonths, subMonths, startOfWeek, endOfWeek, subWeeks, getWeek, getWeekYear, differenceInCalendarDays } from 'date-fns';
+import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay, addMonths, subMonths, startOfWeek, endOfWeek, subWeeks, getWeek, getWeekYear, differenceInCalendarDays, subDays } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
 import { useSearchParams } from 'react-router-dom';
 import { 
@@ -14,12 +14,14 @@ import {
     Zap,
     BookOpen,
     PenTool,
-    ChevronDown
+    ChevronDown,
+    Flame
 } from 'lucide-react';
 import { useTaskStore } from '../store/useTaskStore';
 import { useDiaryStore, DiaryType } from '../store/useDiaryStore';
 import DiaryEditor from '../components/diary/DiaryEditor';
-import { GrowthIcon, GrowthStageType } from '../components/GrowthStageIcons';
+import { GrowthIcon } from '../components/GrowthStageIcons';
+import { computeWeeklyGrowth } from '../utils/growthLogic';
 import clsx from 'clsx';
 import './CalendarPage.css';
 
@@ -112,96 +114,7 @@ export default function CalendarPage() {
       };
   }, [showCreateMenu, closeMenu]);
 
-  // Compute Weekly Growth Logic
-  const computeWeeklyGrowth = useCallback((weekMinutes: number) => {
-      const units = Math.floor(weekMinutes / 25);
-      
-      const getProgress = (current: number, total: number, unitIcon: GrowthStageType) => ({
-          current,
-          total,
-          unitIcon
-      });
-
-      // Level 0: Empty (0 units)
-      if (units < 1) {
-          return {
-              state: 'empty' as const,
-              stage: 'empty' as GrowthStageType,
-              stageName: '准备中',
-              stageAriaLabel: '准备中',
-              helper: '从一次 5 分钟专注开始',
-              progress: getProgress(0, 3, 'sprout'),
-              leafUnits: units
-          };
-      }
-
-      // Level 1: Sprout (1-2 units) -> Target 3 (75 min)
-      if (units < 3) {
-          return {
-              state: 'sprout' as const,
-              stage: 'sprout' as GrowthStageType,
-              stageName: '萌芽',
-              stageAriaLabel: '萌芽阶段',
-              helper: null as string | null,
-              progress: getProgress(units, 3, 'sprout'),
-              leafUnits: units
-          };
-      }
-
-      // Level 2: Seedling (3-7 units) -> Target 8 (200 min)
-      if (units < 8) {
-          return {
-              state: 'seedling' as const,
-              stage: 'seedling' as GrowthStageType,
-              stageName: '生长',
-              stageAriaLabel: '生长阶段',
-              helper: null as string | null,
-              progress: getProgress(units - 3 + 1, 6, 'seedling'), // Show 1-6 seedlings
-              leafUnits: units
-          };
-      }
-
-      // Level 3: Sapling (8-17 units) -> Target 18 (450 min)
-      if (units < 18) {
-          // Scale 10 units to 5 visual steps
-          const progress = Math.ceil((units - 8 + 1) / 2); 
-          return {
-              state: 'sapling' as const,
-              stage: 'sapling' as GrowthStageType,
-              stageName: '树苗',
-              stageAriaLabel: '树苗阶段',
-              helper: null as string | null,
-              progress: getProgress(progress, 5, 'sapling'),
-              leafUnits: units
-          };
-      }
-
-      // Level 4: Tree (18-31 units) -> Target 32 (800 min)
-      if (units < 32) {
-          // Scale 14 units to 5 visual steps
-          const progress = Math.ceil((units - 18 + 1) / 3);
-          return {
-              state: 'tree' as const,
-              stage: 'tree' as GrowthStageType,
-              stageName: '小树',
-              stageAriaLabel: '小树阶段',
-              helper: null as string | null,
-              progress: getProgress(Math.min(progress, 5), 5, 'tree'),
-              leafUnits: units
-          };
-      }
-
-      // Level 5: Forest (32+ units) -> 800 min+
-      return {
-          state: 'forest' as const,
-          stage: 'forest' as GrowthStageType,
-          stageName: '茂盛',
-          stageAriaLabel: '茂盛阶段',
-          helper: null as string | null,
-          progress: getProgress(5, 5, 'forest'),
-          leafUnits: units
-      };
-  }, []);
+  // Compute Weekly Growth Logic - Moved to utils/growthLogic.ts
 
   const currentWeekGrowth = useMemo(() => {
       const now = new Date();
@@ -222,7 +135,7 @@ export default function CalendarPage() {
           records,
           ...growth
       };
-  }, [computeWeeklyGrowth, focusRecords]);
+  }, [focusRecords]);
 
   const nextSynthesis = useMemo(() => {
       const weekMinutes = currentWeekGrowth.totalMinutes;
@@ -287,7 +200,7 @@ export default function CalendarPage() {
               totalMinutes
           };
       });
-  }, [computeWeeklyGrowth, focusRecords]);
+  }, [focusRecords]);
 
   // Derived Data: Tab Counts
   const tabCounts = useMemo(() => {
@@ -317,6 +230,20 @@ export default function CalendarPage() {
 
     return counts;
   }, [entries, searchTerm, selectedTag]);
+
+  // Derived Data: Tag Stats
+  const tagStats = useMemo(() => {
+    const stats = new Map<string, number>();
+    entries.forEach(entry => {
+      entry.tags?.forEach(tag => {
+        stats.set(tag, (stats.get(tag) || 0) + 1);
+      });
+    });
+    
+    return Array.from(stats.entries())
+      .map(([tag, count]) => ({ tag, count }))
+      .sort((a, b) => b.count - a.count);
+  }, [entries]);
 
   // Derived Data: Filtered Entries
   const filteredEntries = useMemo(() => {
@@ -349,6 +276,40 @@ export default function CalendarPage() {
       });
       return dates;
   }, [entries]);
+
+  // Derived Data: Streak
+  const streak = useMemo(() => {
+      const sortedDates = Array.from(activeDates).sort((a, b) => b.localeCompare(a));
+      if (sortedDates.length === 0) return 0;
+
+      const today = format(new Date(), 'yyyy-MM-dd');
+      const yesterday = format(subDays(new Date(), 1), 'yyyy-MM-dd');
+      
+      // If neither today nor yesterday has entry, streak is 0
+      if (sortedDates[0] !== today && sortedDates[0] !== yesterday) return 0;
+
+      let count = 1;
+      let currentDate = new Date(sortedDates[0]);
+
+      for (let i = 1; i < sortedDates.length; i++) {
+          const prevDate = new Date(sortedDates[i]);
+          const diff = differenceInCalendarDays(currentDate, prevDate);
+          
+          if (diff === 1) {
+              count++;
+              currentDate = prevDate;
+          } else {
+              break;
+          }
+      }
+      return count;
+  }, [activeDates]);
+
+  const totalWords = useMemo(() => {
+      return entries.reduce((sum, entry) => sum + (entry.content?.length || 0), 0);
+  }, [entries]);
+
+
 
   const handleAddDiary = (type: DiaryType | unknown = 'note') => {
     const validTypes: DiaryType[] = ['note', 'learning', 'review'];
@@ -396,9 +357,9 @@ export default function CalendarPage() {
 
   return (
     <div className="page-container calendar-page">
-      <header className="page-header calendar-header">
-          <div className="header-content">
-              <h1>每日随记</h1>
+      <div className="calendar-header-row page-header">
+          <div>
+              <h1 className="page-title">每日随记</h1>
               <p className="page-subtitle">记录生活，反思成长</p>
           </div>
           <div className="header-actions">
@@ -453,7 +414,7 @@ export default function CalendarPage() {
                         )}
               </div>
           </div>
-      </header>
+      </div>
 
       <div className={clsx('calendar-layout', { 'sidebar-collapsed': isSidebarCollapsed })}>
         <div className="calendar-main">
@@ -767,22 +728,68 @@ export default function CalendarPage() {
                 </div>
             </div>
 
-            {/* Stats Widget */}
-            <div className="sidebar-card stats-widget">
+            {/* Tags Card */}
+            <div className="sidebar-card tags-card">
+                <div className="widget-title">
+                    <Tag size={16} />
+                    <span>常用标签</span>
+                </div>
+                
+                {tagStats.length > 0 ? (
+                    <div className="tags-cloud">
+                        <button 
+                            className={clsx('tag-chip', { active: !selectedTag })}
+                            onClick={() => setSelectedTag(null)}
+                        >
+                            全部
+                        </button>
+                        {tagStats.slice(0, 15).map(({ tag, count }) => (
+                            <button 
+                                key={tag}
+                                className={clsx('tag-chip', { active: selectedTag === tag })}
+                                onClick={() => setSelectedTag(tag === selectedTag ? null : tag)}
+                            >
+                                {tag} <span className="count">{count}</span>
+                            </button>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="empty-tags-hint">
+                        暂无标签，写日记时添加 #标签 吧
+                    </div>
+                )}
+            </div>
+
+            {/* Stats Overview Card */}
+            <div className="sidebar-card stats-overview-card">
                 <div className="widget-title">
                     <BarChart2 size={16} />
                     <span>数据概览</span>
                 </div>
-                <div className="stats-row">
+                <div className="stats-grid">
                     <div className="stat-item">
                         <span className="stat-value">{entries.length}</span>
-                        <span className="stat-label">总记录</span>
+                        <span className="stat-label">总篇数</span>
                     </div>
                     <div className="stat-item">
                         <span className="stat-value">
                             {entries.filter(e => isSameMonth(new Date(e.date), new Date())).length}
                         </span>
-                        <span className="stat-label">本月</span>
+                        <span className="stat-label">本月篇数</span>
+                    </div>
+                    <div className="stat-item">
+                        <span className="stat-value highlight-fire">
+                             <div className="value-with-icon">
+                                {streak} <Flame size={14} className={streak > 0 ? 'icon-flame active' : 'icon-flame'} />
+                             </div>
+                        </span>
+                        <span className="stat-label">连更天数</span>
+                    </div>
+                    <div className="stat-item">
+                        <span className="stat-value">
+                            {totalWords > 1000 ? `${(totalWords / 1000).toFixed(1)}k` : totalWords}
+                        </span>
+                        <span className="stat-label">总字数</span>
                     </div>
                 </div>
             </div>

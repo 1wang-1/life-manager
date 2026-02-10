@@ -2,9 +2,8 @@ import { app, BrowserWindow, Menu, ipcMain, shell, dialog } from 'electron'
 import path from 'node:path'
 import fs from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
-import { registerTaskIpc } from '../src/main/ipc/task-ipc'
 import { registerTimerIpc } from '../src/main/ipc/timer-ipc'
-import { closeDb, getDataDir } from '../src/main/data/db'
+import { getDataDir } from '../src/main/data/db'
 
 const isDev = !app.isPackaged
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -33,8 +32,8 @@ function createWindow() {
     webPreferences: {
       preload: path.join(__dirname, 'preload.cjs'),
       sandbox: false,
-      webSecurity: false, // Disable webSecurity to allow CORS for LX Scripts
-      allowRunningInsecureContent: true,
+      webSecurity: true, // Enabled for security
+      allowRunningInsecureContent: false,
       backgroundThrottling: false // Prevent timer throttling when minimized
     }
   })
@@ -349,7 +348,7 @@ app.whenReady().then(() => {
 
     await fs.mkdir(nextDir, { recursive: true })
 
-    closeDb()
+    // closeDb() - removed as we are not using sqlite
 
     const dbFiles = ['life-manager.db', 'life-manager.db-wal', 'life-manager.db-shm']
     for (const filename of dbFiles) {
@@ -525,7 +524,7 @@ app.whenReady().then(() => {
       return false
     }
   })
-  registerTaskIpc()
+  // registerTaskIpc() - removed
   registerTimerIpc()
   createWindow()
   console.log('[LX] Log file:', path.join(getDataDir(), 'logs', 'lx-debug.txt'))

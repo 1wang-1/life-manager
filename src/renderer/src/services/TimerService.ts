@@ -3,7 +3,7 @@ import { useTimerStore } from '../store/useTimerStore';
 import { useTaskStore, TaskStatus } from '../store/useTaskStore';
 import { useSettingsStore, TimerMode } from '../store/useSettingsStore';
 import { useUIStore } from '../store/useUIStore';
-import { playTimerCompletionSound } from '../utils/sound';
+import { playTimerCompletionSound, playTimerStartSound, playTimerPauseSound } from '../utils/sound';
 import { buildFocusRewardToastPayload } from '../utils/focusRewards';
 
 class TimerService {
@@ -74,6 +74,8 @@ class TimerService {
     useTimerStore.getState().setTotalDuration(breakDuration);
     useTimerStore.getState().setStatus('running');
     useTimerStore.getState().setStartTime(Date.now());
+    
+    playTimerStartSound();
 
     this.lastTickTime = Date.now();
     if (this.timerId) clearInterval(this.timerId);
@@ -116,7 +118,6 @@ class TimerService {
       status,
       activeTaskId,
       mode: currentMode,
-      remainingTime: currentRemaining,
       sessionKind
     } = useTimerStore.getState();
 
@@ -138,6 +139,7 @@ class TimerService {
     // RESUME LOGIC: If paused and continuing same task/mode, just resume
     if (status === 'paused' && (!taskId || taskId === activeTaskId) && effectiveMode === effectiveCurrentMode && !durationMinutes) {
       useTimerStore.getState().setStatus('running');
+      playTimerStartSound();
       this.lastTickTime = Date.now();
       if (this.timerId) clearInterval(this.timerId);
       this.timerId = setInterval(() => {
@@ -158,7 +160,13 @@ class TimerService {
         const { settings } = useSettingsStore.getState();
         const defaultCountdownSeconds = Math.max(1, settings.countdownDefaultFocusMinutes) * 60;
 
-        if (taskId) {
+        const { status, totalDuration, activeTaskId: currentActiveId } = useTimerStore.getState();
+        const isSwitchingTask = taskId && taskId !== currentActiveId;
+
+        // If user manually adjusted time (IDLE state) and we are not switching tasks, respect the manual setting
+        if (status === 'idle' && !isSwitchingTask && totalDuration > 0) {
+          initialTime = totalDuration;
+        } else if (taskId) {
           const task = useTaskStore.getState().getTaskById(taskId);
           const fromPreference = task?.focusPreference?.mode === 'countdown' ? task.focusPreference.duration : undefined;
           const fromPlanned = this.parseTaskPlannedMinutes(task?.plannedTime);
@@ -169,12 +177,7 @@ class TimerService {
             initialTime = defaultCountdownSeconds;
           }
         } else {
-        // If in countdown mode and we have a valid remaining time (user edited), use it
-        if (effectiveCurrentMode === 'countdown' && currentRemaining > 0 && status === 'idle') {
-          initialTime = currentRemaining;
-        } else {
           initialTime = defaultCountdownSeconds;
-        }
         }
       }
     } else if (effectiveMode === 'forward_stage') {
@@ -207,6 +210,8 @@ class TimerService {
 
     useTimerStore.getState().setStatus('running');
     useTimerStore.getState().setStartTime(Date.now());
+    
+    playTimerStartSound();
 
     this.lastTickTime = Date.now();
     if (this.timerId) clearInterval(this.timerId);
@@ -231,7 +236,7 @@ class TimerService {
   }
 
   previewSound() {
-    playTimerCompletionSound(false);
+    playTimerCompletionSound(false, false);
   }
 
   pauseTimer() {
@@ -240,6 +245,7 @@ class TimerService {
       this.timerId = null;
     }
     useTimerStore.getState().setStatus('paused');
+    playTimerPauseSound();
     this.emitState();
   }
 
@@ -331,7 +337,7 @@ class TimerService {
       useTimerStore.getState().setBreakReturnState(null);
       
       // Play sound when manually stopping a break
-      playTimerCompletionSound(false);
+      playTimerCompletionSound(false, true);
 
       if (breakReturnState) {
         useTimerStore.getState().setMode(breakReturnState.mode === 'pomodoro' ? 'countdown' : breakReturnState.mode);
@@ -362,7 +368,8 @@ class TimerService {
       useTimerStore.getState().setTotalDuration(defaultTime);
       
       // Play sound when discarding (user feedback for action)
-      playTimerCompletionSound(false);
+      // Maybe use pause sound or completion sound (generic)
+      playTimerCompletionSound(false, false);
       
       this.emitState();
       return;
@@ -390,7 +397,7 @@ class TimerService {
     useTimerStore.getState().setLastCompletionTime(endAt);
 
     if (elapsedTime > 0) {
-      playTimerCompletionSound(false);
+      playTimerCompletionSound(false, false);
     }
 
     if (!options?.fromMini && elapsedTime >= 60 && settings.autoBreak) {
@@ -452,7 +459,7 @@ class TimerService {
         // Stage Complete
         useTimerStore.getState().incrementStage();
         this.triggerNotification('阶段完成', `已完成第 ${useTimerStore.getState().stageIndex - 1} 阶段`);
-        playTimerCompletionSound(false);
+        playTimerCompletionSound(false, false);
       }
     } else {
       // Stopwatch / Forward Free
@@ -471,6 +478,7 @@ class TimerService {
   private triggerNotification(title: string, body: string) {
     const { settings } = useSettingsStore.getState();
     const level = settings.notificationLevel || 'level1';
+    const isBreak = useTimerStore.getState().sessionKind === 'break';
 
     if (level === 'level1') {
       if (settings.desktopNotify) {
@@ -479,13 +487,13 @@ class TimerService {
       window.api?.window?.flash(true);
     } else if (level === 'level2') {
       // Improved pleasant sound
-      playTimerCompletionSound(false);
+      playTimerCompletionSound(false, isBreak);
       if (settings.desktopNotify) {
         new Notification(title, { body, silent: true });
       }
     } else if (level === 'level3') {
       // Repeated pleasant sound + interaction required
-      playTimerCompletionSound(true);
+      playTimerCompletionSound(true, isBreak);
       window.api?.window?.flash(true);
       if (settings.desktopNotify) {
         const n = new Notification(title, { body, requireInteraction: true });
@@ -516,7 +524,7 @@ class TimerService {
     if (sessionKind === 'break') {
       this.triggerNotification('休息结束', '准备开始下一轮专注吧！');
       if (settings.notificationLevel === 'level1') {
-        playTimerCompletionSound(false);
+        playTimerCompletionSound(false, true);
       }
       useTimerStore.getState().setStatus('idle');
       useTimerStore.getState().setStartTime(null);
@@ -546,6 +554,11 @@ class TimerService {
     });
     useTimerStore.getState().setLastRecordId(recordId);
 
+    // End focus session for the current task (unbind it), but DO NOT mark it as completed in DB
+    if (activeTaskId) {
+       useTimerStore.getState().setActiveTaskId(null);
+    }
+
     useTimerStore.getState().setLastCompletionTime(Date.now());
     useTimerStore.getState().setLastCompletedTask(activeTaskId);
     useTimerStore.getState().setLastDuration(elapsedTime);
@@ -554,7 +567,7 @@ class TimerService {
     // Notification
     this.triggerNotification('专注完成', '休息一下吧！');
     if (settings.notificationLevel === 'level1') {
-      playTimerCompletionSound(false);
+      playTimerCompletionSound(false, false);
     }
     
     if (settings.autoBreak) {

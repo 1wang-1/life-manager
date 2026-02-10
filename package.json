@@ -1,8 +1,8 @@
 {
   "name": "life-manager-desktop",
-  "productName": "生成管理器",
+  "productName": "LifeManager",
   "private": true,
-  "version": "0.0.2",
+  "version": "0.0.3",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -14,7 +14,6 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.7.0",
-    "better-sqlite3": "^12.6.2",
     "clsx": "^2.1.1",
     "crypto-js": "^4.2.0",
     "date-fns": "^4.1.0",

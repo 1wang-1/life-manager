@@ -43,8 +43,8 @@ export function Sidebar() {
   return (
     <aside className={clsx('sidebar', { collapsed })}>
       <div className="brand">
-        <div className="logo-icon">GM</div>
-        {!collapsed && <span className="brand-text">生成管理器</span>}
+        <div className="logo-icon">LM</div>
+        {!collapsed && <span className="brand-text">人生管理器</span>}
       </div>
       
       <nav className="nav">

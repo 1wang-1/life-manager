@@ -1,4 +1,4 @@
-.settings-page {
+.page-container.settings-page {
   width: 100%;
   padding: 32px 48px;
   display: flex;
@@ -16,7 +16,7 @@
 .settings-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
   padding: 0;
   /* background: var(--color-bg-card); Removed to match other pages */
   /* border-bottom: 1px solid var(--color-border-light); Removed to match other pages */
@@ -55,7 +55,7 @@
 /* Dashboard Grid */
 .settings-dashboard {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
   gap: 1.5rem;
   padding-bottom: 2rem;
   width: 100%;
@@ -78,7 +78,7 @@
 }
 
 .card-header {
-  padding: 1.25rem 1.5rem;
+  padding: 1rem 1.25rem;
   border-bottom: 1px solid var(--color-border-light);
   display: flex;
   align-items: center;
@@ -87,16 +87,16 @@
 }
 
 .card-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
   background: var(--color-bg-main);
   color: var(--color-primary);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
 }
 
 .card-header h3 {
@@ -107,10 +107,10 @@
 }
 
 .card-body {
-  padding: 1.5rem;
+  padding: 1.25rem;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1rem;
 }
 
 /* Form Elements */

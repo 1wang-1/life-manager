@@ -1,4 +1,4 @@
-﻿# Logs
+# Logs
 logs
 *.log
 npm-debug.log*
@@ -26,3 +26,5 @@ release
 *.sln
 *.sw?
 
+# Temporary build helpers
+.eb-binaries-mirror/

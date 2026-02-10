@@ -46,6 +46,7 @@ export function TaskCard({ task, variant = 'card', onEdit, onDragStart, readOnly
   const isTimerRunning = activeTaskId === task.id && timerStatus === 'running';
   const isTimerPaused = activeTaskId === task.id && timerStatus === 'paused';
   const isTimerActive = isTimerRunning || isTimerPaused;
+  const isCapsuleView = false; // variant === 'card' && isTimerActive;
   const isRecentlyCompleted = task.status === 'completed' && !!task.completedAt && Date.now() - task.completedAt < 10 * 60 * 1000;
 
   const lastFocusEnd = (() => {
@@ -136,11 +137,6 @@ export function TaskCard({ task, variant = 'card', onEdit, onDragStart, readOnly
     if (isTimerActive) {
       timerService.requestStopTimer();
     }
-  };
-
-  const handleStartFocus25 = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    timerService.startTimer(task.id, 'countdown', Math.max(1, settings.countdownDefaultFocusMinutes));
   };
 
   const handleCustomSave = () => {
@@ -292,6 +288,7 @@ export function TaskCard({ task, variant = 'card', onEdit, onDragStart, readOnly
   return (
     <div
       className={clsx('task-card group relative', `variant-${variant}`, {
+        'variant-capsule': isCapsuleView,
         'active-timer': isTimerActive,
         'recently-completed': isRecentlyCompleted,
         'recently-focused': isRecentlyFocused,
@@ -417,7 +414,34 @@ export function TaskCard({ task, variant = 'card', onEdit, onDragStart, readOnly
         document.body
       )}
 
-      {variant === 'list' ? (
+      {isCapsuleView ? (
+        // Capsule Variant (Active Timer)
+        <div className="capsule-inner">
+           <div className="capsule-left">
+             <button 
+                className="capsule-btn primary-action" 
+                onClick={handleToggleTimer}
+                title={isTimerPaused ? "继续" : "暂停"}
+             >
+                {isTimerPaused ? <Play size={16} fill="currentColor" /> : <Pause size={16} fill="currentColor" />}
+             </button>
+           </div>
+           
+           <div className="capsule-center">
+              <span className="capsule-time">{liveTimeText()}</span>
+              <span className="capsule-title" title={task.title}>{task.title}</span>
+           </div>
+           
+           <div className="capsule-right">
+              <button className="capsule-btn stop-action" onClick={handleStopTimer} title="结束">
+                 <Square size={14} fill="currentColor" />
+              </button>
+              <button className="capsule-btn complete-action" onClick={handleComplete} title="完成">
+                 <CheckCircle size={16} />
+              </button>
+           </div>
+        </div>
+      ) : variant === 'list' ? (
         // List Variant Layout
         <div className="task-list-content">
             <div className="task-list-header">
@@ -597,18 +621,6 @@ export function TaskCard({ task, variant = 'card', onEdit, onDragStart, readOnly
                       }}
                       onClick={(e) => e.stopPropagation()}
                     >
-                       {task.status !== 'completed' && (
-                         <button
-                           className="menu-item"
-                           onClick={(e) => {
-                             e.stopPropagation();
-                             setShowMenu(false);
-                             handleStartFocus25(e);
-                           }}
-                         >
-                          <Play size={14} className="menu-icon" /> 开始专注 {Math.max(1, settings.countdownDefaultFocusMinutes)} 分钟
-                         </button>
-                       )}
                        <button 
                          className="menu-item"
                          onClick={(e) => { e.stopPropagation(); setShowMenu(false); openPreferenceModal(); }}
@@ -616,21 +628,25 @@ export function TaskCard({ task, variant = 'card', onEdit, onDragStart, readOnly
                          <SlidersHorizontal size={14} className="menu-icon" /> 计时设置
                        </button>
                        <button 
-                 className="menu-item"
-                 onClick={(e) => { e.stopPropagation(); setShowMenu(false); onEdit(task); }}
-               >
-                 <Edit2 size={14} className="menu-icon" /> 编辑
-               </button>
-               {task.status !== 'completed' && (
-                  <button 
-                    className="menu-item"
-                    onClick={(e) => { e.stopPropagation(); setShowMenu(false); handlePermanentComplete(e); }}
-                  >
-                    <CheckCircle size={14} className="menu-icon" /> 永久完成
-                  </button>
-                )}
-               <button 
-                 className="menu-item delete"
+                         className="menu-item"
+                         onClick={(e) => { e.stopPropagation(); setShowMenu(false); onEdit(task); }}
+                       >
+                         <Edit2 size={14} className="menu-icon" /> 编辑
+                       </button>
+
+                       {task.status !== 'completed' && (
+                          <button 
+                            className="menu-item"
+                            onClick={(e) => { e.stopPropagation(); setShowMenu(false); handlePermanentComplete(e); }}
+                          >
+                            <CheckCircle size={14} className="menu-icon" /> 永久完成
+                          </button>
+                        )}
+                       
+                       <div style={{ height: 1, background: 'rgba(0,0,0,0.06)', margin: '4px 8px' }} />
+
+                       <button 
+                         className="menu-item delete"
                          onClick={(e) => { e.stopPropagation(); setShowMenu(false); deleteTask(task.id); }}
                        >
                          <Trash2 size={14} className="menu-icon" /> 删除

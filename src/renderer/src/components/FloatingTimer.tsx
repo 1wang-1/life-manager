@@ -19,7 +19,7 @@ export default function FloatingTimer() {
   const { status, mode, remainingTime, elapsedTime, activeTaskId, sessionKind } = useTimerStore();
   const { getTaskById } = useTaskStore();
   const [hidden, setHidden] = useState(false);
-  const [position, setPosition] = useState({ x: window.innerWidth - 284, y: window.innerHeight - 300 });
+  const [position, setPosition] = useState({ x: window.innerWidth - 320, y: window.innerHeight - 80 });
   const [isDragging, setIsDragging] = useState(false);
   const dragStartPos = useRef({ x: 0, y: 0 });
   const cardStartPos = useRef({ x: 0, y: 0 });
@@ -29,7 +29,7 @@ export default function FloatingTimer() {
   }, [status]);
 
   const effectiveMode = mode === 'pomodoro' ? 'countdown' : mode;
-  const isCountdown = effectiveMode === 'countdown';
+  // const isCountdown = effectiveMode === 'countdown';
   const seconds = effectiveMode === 'stopwatch' || effectiveMode === 'forward_free' || effectiveMode === 'forward_stage' ? elapsedTime : remainingTime;
   
   const taskTitle = useMemo(() => {
@@ -131,16 +131,6 @@ export default function FloatingTimer() {
   const isPaused = status === 'paused';
   const isRunning = status === 'running';
 
-  let badgeText = '';
-  if (isResting) {
-    badgeText = '休息中';
-  } else if (isPaused) {
-    badgeText = '已暂停';
-  } else {
-    if (isCountdown) badgeText = '倒计时 · 专注中';
-    else badgeText = '正向 · 专注中';
-  }
-
   return (
     <div 
       className={clsx("floating-timer", { "paused": isPaused, "resting": isResting, "dragging": isDragging })}
@@ -148,47 +138,42 @@ export default function FloatingTimer() {
       onMouseDown={handleMouseDown}
       onTouchStart={handleTouchStart}
     >
-      {/* Top Right: Expand to Main */}
-      <button className="floating-expand-btn" onClick={handleExpand} title="展开回主界面">
-        <Maximize2 size={16} />
-      </button>
+      <div className="floating-left">
+        {isResting ? (
+          <button className="floating-action-btn" onClick={handleExtendRest} title="延长 5 分钟">
+            <Plus size={16} strokeWidth={2.5} />
+          </button>
+        ) : (
+          <button className="floating-action-btn primary" onClick={handleToggle} title={isRunning ? '暂停' : '继续'}>
+            {isRunning ? (
+              <Pause size={16} fill="currentColor" strokeWidth={0} />
+            ) : (
+              <Play size={16} fill="currentColor" strokeWidth={0} />
+            )}
+          </button>
+        )}
+      </div>
 
-      {/* Info Area */}
-      <div className="floating-info-area">
-        <div className="floating-badge">{badgeText}</div>
+      <div className="floating-center">
         <div className="floating-time">{format(Math.max(0, seconds))}</div>
         <div className="floating-task" title={taskTitle}>
           {taskTitle}
         </div>
       </div>
 
-      {/* Action Area */}
-      <div className="floating-actions-area">
-        {/* Left Button */}
+      <div className="floating-right">
         {isResting ? (
           <button className="floating-action-btn" onClick={handleSkipRest} title="跳过休息">
-            <Square size={20} fill="currentColor" />
+            <Square size={14} fill="currentColor" />
           </button>
         ) : (
           <button className="floating-action-btn" onClick={handleStop} title="结束">
-            <Square size={20} fill="currentColor" />
+            <Square size={14} fill="currentColor" />
           </button>
         )}
-
-        {/* Right Button */}
-        {isResting ? (
-          <button className="floating-action-btn" onClick={handleExtendRest} title="延长 5 分钟">
-            <Plus size={24} strokeWidth={2.5} />
-          </button>
-        ) : (
-          <button className="floating-action-btn" onClick={handleToggle} title={isRunning ? '暂停' : '继续'}>
-            {isRunning ? (
-              <Pause size={24} fill="currentColor" strokeWidth={0} />
-            ) : (
-              <Play size={24} fill="currentColor" strokeWidth={0} />
-            )}
-          </button>
-        )}
+        <button className="floating-action-btn" onClick={handleExpand} title="展开回主界面">
+          <Maximize2 size={14} />
+        </button>
       </div>
     </div>
   );

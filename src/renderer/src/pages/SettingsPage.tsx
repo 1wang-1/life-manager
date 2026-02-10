@@ -164,41 +164,17 @@ export default function SettingsPage() {
                   <input
                     type="checkbox"
                     checked={settings.focusFeedbackEnabled}
-                    onChange={(e) => updateSettings({ focusFeedbackEnabled: e.target.checked })}
+                    onChange={(e) => updateSettings({ 
+                      focusFeedbackEnabled: e.target.checked,
+                      focusFeedbackAutoPrompt: e.target.checked,
+                      focusFeedbackWriteToWeeklyReview: e.target.checked
+                    })}
                   />
                   <div className="checkbox-text">
                     <span className="primary-text">开启专注反馈</span>
-                    <span className="secondary-text">专注完成后弹出反馈，像专注森林一样</span>
+                    <span className="secondary-text">专注完成后自动弹出反馈，并记录到周报</span>
                   </div>
                 </label>
-
-                {settings.focusFeedbackEnabled && (
-                  <label className="checkbox-label" style={{ marginLeft: 34 }}>
-                    <input
-                      type="checkbox"
-                      checked={settings.focusFeedbackAutoPrompt}
-                      onChange={(e) => updateSettings({ focusFeedbackAutoPrompt: e.target.checked })}
-                    />
-                    <div className="checkbox-text">
-                      <span className="primary-text">完成后自动弹出反馈</span>
-                      <span className="secondary-text">关闭后可手动点击“专注反馈”</span>
-                    </div>
-                  </label>
-                )}
-
-                {settings.focusFeedbackEnabled && (
-                  <label className="checkbox-label" style={{ marginLeft: 34 }}>
-                    <input
-                      type="checkbox"
-                      checked={settings.focusFeedbackWriteToWeeklyReview}
-                      onChange={(e) => updateSettings({ focusFeedbackWriteToWeeklyReview: e.target.checked })}
-                    />
-                    <div className="checkbox-text">
-                      <span className="primary-text">写入日记的本周复盘</span>
-                      <span className="secondary-text">将本次专注作为 Done/Challenges 记录进本周成长</span>
-                    </div>
-                  </label>
-                )}
               </div>
             </div>
           </section>
@@ -229,33 +205,25 @@ export default function SettingsPage() {
                 <label className="checkbox-label">
                   <input
                     type="checkbox"
-                    checked={settings.endSound}
-                    onChange={(e) => updateSettings({ endSound: e.target.checked })}
+                    checked={settings.endSound || settings.taskSoundEnabled}
+                    onChange={(e) => {
+                      const enabled = e.target.checked;
+                      updateSettings({ 
+                        endSound: enabled,
+                        taskSoundEnabled: enabled 
+                      });
+                    }}
                   />
                   <div className="checkbox-text">
-                    <span className="primary-text">计时完成音效</span>
-                    <span className="secondary-text">专注完成 / 休息结束 / 阶段完成时播放提示音</span>
-                  </div>
-                </label>
-
-                <div className="setting-divider" style={{ borderTop: '1px solid var(--gray-100)' }}></div>
-
-                <label className="checkbox-label">
-                  <input
-                    type="checkbox"
-                    checked={settings.taskSoundEnabled}
-                    onChange={(e) => updateSettings({ taskSoundEnabled: e.target.checked })}
-                  />
-                  <div className="checkbox-text">
-                    <span className="primary-text">任务完成音效</span>
-                    <span className="secondary-text">勾选完成任务时播放提示音</span>
+                    <span className="primary-text">开启提示音效</span>
+                    <span className="secondary-text">任务完成或计时结束时播放提示音</span>
                   </div>
                 </label>
 
                 {(settings.taskSoundEnabled || settings.endSound) && (
                   <div className="form-group" style={{ marginLeft: '34px' }}>
                     <label style={{ fontSize: '0.85rem', color: 'var(--gray-500)', fontWeight: 500 }}>
-                      完成提示音量（任务完成 / 计时完成）({Math.round(settings.taskSoundVolume * 100)}%)
+                      音量调节 ({Math.round(settings.taskSoundVolume * 100)}%)
                     </label>
                     <div className="range-container">
                       <input

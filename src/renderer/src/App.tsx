@@ -77,6 +77,8 @@ function AppContent() {
     );
   }
 
+  const showFloatingTimer = location.pathname !== '/';
+
   return (
     <MainLayout className={undefined}>
       <Routes>
@@ -89,7 +91,7 @@ function AppContent() {
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
 
-      <FloatingTimer />
+      {showFloatingTimer && <FloatingTimer />}
     </MainLayout>
   );
 }

@@ -7,7 +7,8 @@ import { useTaskStore } from '../../store/useTaskStore';
 import { useUIStore } from '../../store/useUIStore';
 import { useTimerStore } from '../../store/useTimerStore';
 import { useSettingsStore } from '../../store/useSettingsStore';
-import { GrowthIcon, type GrowthStageType } from '../GrowthStageIcons';
+import { GrowthIcon } from '../GrowthStageIcons';
+import { computeWeeklyGrowth, computeNextStage } from '../../utils/growthLogic';
 import './FocusSummary.css';
 
 export function StopConfirmSheet() {
@@ -325,14 +326,6 @@ export function FocusEndCardFeedback() {
     };
   }, [autoBreakEnabled, clearHideTimer, close, lastCompletionTime, lastDuration, lastFeedbackShownAt, setLastFeedbackShownAt]);
 
-  const minutes = useMemo(() => {
-    const seconds = Math.max(0, Math.floor(lastDuration));
-    if (seconds <= 0) return 0;
-    return Math.max(1, Math.floor(seconds / 60));
-  }, [lastDuration]);
-
-  const leavesGained = useMemo(() => Math.floor(Math.max(0, lastDuration) / (25 * 60)), [lastDuration]);
-
   const activeTask = useMemo(() => {
     if (!lastCompletedTask) return null;
     return getTaskById(lastCompletedTask);
@@ -340,11 +333,11 @@ export function FocusEndCardFeedback() {
 
   const canMarkTaskComplete = !!activeTask && activeTask.status !== 'completed';
 
-  const weeklyLeavesBefore = useMemo(() => {
+  const weeklyMinutesBefore = useMemo(() => {
     const now = new Date();
     const weekStart = startOfWeek(now, { weekStartsOn: 1 }).getTime();
     const weekEnd = endOfWeek(now, { weekStartsOn: 1 }).getTime();
-    return focusRecords
+    return Math.floor(focusRecords
       .filter((r) => {
         if (!r.completedAt) return false;
         const t = new Date(r.completedAt).getTime();
@@ -353,40 +346,29 @@ export function FocusEndCardFeedback() {
         if (lastRecordId && r.id === lastRecordId) return false;
         return true;
       })
-      .reduce((sum, r) => sum + Math.floor((r.duration || 0) / (25 * 60)), 0);
+      .reduce((sum, r) => sum + (r.duration || 0), 0) / 60);
   }, [focusRecords, lastRecordId]);
 
-  const synthesisResult = useMemo(() => {
-    const beforeLeaves = weeklyLeavesBefore;
-    const afterLeaves = weeklyLeavesBefore + leavesGained;
+  const heroContent = useMemo(() => {
+    const currentSessionMinutes = Math.floor(Math.max(0, lastDuration) / 60);
+    const totalWeeklyMinutes = weeklyMinutesBefore + currentSessionMinutes;
 
-    const toTiers = (leaves: number) => {
-      const shrubs = Math.floor(leaves / 3);
-      const sprouts = Math.floor(shrubs / 3);
-      const trees = Math.floor(sprouts / 3);
-      const tree2 = Math.floor(trees / 3);
-      return { shrubs, sprouts, trees, tree2 };
+    const growth = computeWeeklyGrowth(totalWeeklyMinutes);
+    const next = computeNextStage(totalWeeklyMinutes);
+
+    return {
+      type: 'growth' as const,
+      stage: growth.stage,
+      title: growth.stageName,
+      subtitle: next ? `还差 ${Math.ceil(next.minutesToNext / 25)} 个${next.nextUnits - Math.floor(totalWeeklyMinutes/25) === 1 ? '能量' : '升级'}` : '已达巅峰',
+      progress: growth.progress,
+      nextUnitProgress: growth.nextUnitProgress
     };
+  }, [lastDuration, weeklyMinutesBefore]);
 
-    const before = toTiers(beforeLeaves);
-    const after = toTiers(afterLeaves);
-
-    const deltas = {
-      shrub: Math.max(0, after.shrubs - before.shrubs),
-      sprout: Math.max(0, after.sprouts - before.sprouts),
-      tree: Math.max(0, after.trees - before.trees),
-      tree2: Math.max(0, after.tree2 - before.tree2)
-    };
-
-    const levelsUp = [deltas.shrub > 0, deltas.sprout > 0, deltas.tree > 0, deltas.tree2 > 0].filter(Boolean)
-      .length;
-
-    if (deltas.tree2 > 0) return { emoji: '🌳🌳', chain: levelsUp > 1, capReached: true, detail: '森林之心' };
-    if (deltas.tree > 0) return { emoji: '🌳', chain: levelsUp > 1, capReached: false, detail: '获得大树' };
-    if (deltas.sprout > 0) return { emoji: '🌱', chain: levelsUp > 1, capReached: false, detail: '获得树苗' };
-    if (deltas.shrub > 0) return { emoji: '🌿', chain: levelsUp > 1, capReached: false, detail: '获得灌木' };
-    return null;
-  }, [leavesGained, weeklyLeavesBefore]);
+  const encouragementText = useMemo(() => {
+    return `本周已专注 ${weeklyMinutesBefore + Math.floor(lastDuration / 60)} 分钟，保持节奏！`;
+  }, [weeklyMinutesBefore, lastDuration]);
 
   const handleContinueFocus = () => {
     timerService.startTimer(lastCompletedTask, lastCompletedMode || settings.defaultTimerMode);
@@ -440,79 +422,6 @@ export function FocusEndCardFeedback() {
     close();
   };
 
-  const encouragementText = useMemo(() => {
-    if (synthesisResult) {
-      if (synthesisResult.capReached) return '本周成长已达巅峰，太棒了！';
-      return '恭喜升级！你的专注森林更茂盛了！';
-    }
-    if (minutes < 5) return '开始容易，坚持更棒！';
-    if (minutes < 15) return '不错的专注节奏，继续保持！';
-    return '专注的你，闪闪发光！';
-  }, [minutes, synthesisResult]);
-
-  const heroContent = useMemo(() => {
-    const totalLeaves = Math.max(0, weeklyLeavesBefore + leavesGained);
-
-    const getStageForTotalLeaves = (leaves: number): GrowthStageType | null => {
-      if (leaves >= 243) return 'forest';
-      if (leaves >= 81) return 'tree';
-      if (leaves >= 27) return 'sapling';
-      if (leaves >= 9) return 'seedling';
-      if (leaves >= 3) return 'sprout';
-      return null;
-    };
-
-    const stageLabel: Record<GrowthStageType, string> = {
-      empty: '准备中',
-      sprout: '萌芽',
-      seedling: '生长',
-      sapling: '树苗',
-      tree: '小树',
-      forest: '茂盛'
-    };
-
-    if (leavesGained <= 0) {
-      const totalDrops = 5;
-      const progress = Math.max(0, Math.min(1, lastDuration / (25 * 60)));
-      const filledDrops = Math.max(0, Math.min(totalDrops, Math.floor(progress * totalDrops)));
-      const remainingSeconds = Math.max(0, 25 * 60 - lastDuration);
-      const remainingMinutes = Math.ceil(remainingSeconds / 60);
-
-      return {
-        type: 'watering' as const,
-        stage: null as GrowthStageType | null,
-        title: '继续浇灌',
-        subtitle: remainingMinutes > 0 ? `还差 ${remainingMinutes} 分钟获得能量` : '',
-        filledDrops,
-        totalDrops
-      };
-    }
-
-    const stage = getStageForTotalLeaves(totalLeaves);
-    const synthesisProgressDrops = totalLeaves % 3;
-    const neededDrops = synthesisProgressDrops === 0 ? 0 : 3 - synthesisProgressDrops;
-
-    if (!stage) {
-      return {
-        type: 'watering' as const,
-        stage: null as GrowthStageType | null,
-        title: '积攒水滴',
-        subtitle: `还差 ${3 - synthesisProgressDrops} 滴合成`,
-        filledDrops: synthesisProgressDrops,
-        totalDrops: 3
-      };
-    }
-
-    return {
-      type: 'growth' as const,
-      stage,
-      title: stageLabel[stage],
-      subtitle: neededDrops > 0 ? `还差 ${neededDrops} 滴合成` : '',
-      filledDrops: synthesisProgressDrops,
-      totalDrops: 3
-    };
-  }, [lastDuration, weeklyLeavesBefore, leavesGained]);
-
   if (autoBreakEnabled || !mounted) return null;
 
   return (
@@ -537,38 +446,61 @@ export function FocusEndCardFeedback() {
         <div className="lm-focus-card-body">
           <div className={`lm-focus-card-hero ${heroContent.type}`}>
             <div className="lm-focus-card-hero-media">
-              {heroContent.stage ? (
-                <GrowthIcon stage={heroContent.stage} size={96} className="lm-focus-card-hero-image" />
-              ) : (
-                <div className="lm-focus-card-hero-drops" aria-label="水滴合成进度">
-                  {Array.from({ length: heroContent.totalDrops }).map((_, idx) => (
-                    <span
-                      key={idx}
-                      className={`lm-focus-card-hero-drop ${idx < heroContent.filledDrops ? '' : 'is-empty'}`}
-                      aria-hidden
-                    >
-                      💧
-                    </span>
-                  ))}
-                </div>
-              )}
-
-              {heroContent.stage && heroContent.filledDrops > 0 ? (
-                <div className="lm-focus-card-hero-drops" aria-label="水滴剩余进度">
-                  {Array.from({ length: heroContent.totalDrops }).map((_, idx) => (
-                    <span
-                      key={idx}
-                      className={`lm-focus-card-hero-drop ${idx < heroContent.filledDrops ? '' : 'is-empty'}`}
-                      aria-hidden
-                    >
-                      💧
-                    </span>
-                  ))}
-                </div>
-              ) : null}
+                <>
+                  <GrowthIcon stage={heroContent.stage} size={96} className="lm-focus-card-hero-image" />
+                  {heroContent.progress && (
+                    <div className="lm-focus-card-hero-progress" style={{ display: 'flex', gap: '4px', marginTop: '12px' }}>
+                        {Array.from({ length: heroContent.progress.total }).map((_, idx) => (
+                            <GrowthIcon 
+                                key={idx} 
+                                stage={heroContent.progress!.unitIcon} 
+                                size={24} 
+                                style={{ 
+                                    opacity: idx < heroContent.progress!.current ? 1 : 0.3,
+                                    filter: idx < heroContent.progress!.current ? 'none' : 'grayscale(100%)'
+                                }} 
+                            />
+                        ))}
+                    </div>
+                  )}
+                </>
             </div>
             <div className="lm-focus-card-hero-title">{heroContent.title}</div>
-            {heroContent.subtitle ? <div className="lm-focus-card-hero-subtitle">{heroContent.subtitle}</div> : null}
+            
+            {/* Next Unit Progress Bar */}
+            {heroContent.nextUnitProgress && heroContent.nextUnitProgress.current > 0 && (
+                <div 
+                  className="lm-focus-card-hero-subtitle" 
+                  style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center', 
+                    gap: '6px',
+                    marginTop: '4px',
+                    fontSize: '12px',
+                    opacity: 0.85
+                  }}
+                >
+                  <span>💧 正在积攒能量</span>
+                  <div style={{ 
+                    width: '60px', 
+                    height: '4px', 
+                    background: 'rgba(0,0,0,0.08)', 
+                    borderRadius: '2px',
+                    overflow: 'hidden'
+                  }}>
+                    <div style={{ 
+                      width: `${heroContent.nextUnitProgress.percent * 100}%`, 
+                      height: '100%', 
+                      background: '#0288d1',
+                      borderRadius: '2px'
+                    }} />
+                  </div>
+                  <span>{heroContent.nextUnitProgress.current}/25m</span>
+                </div>
+            )}
+            
+            {heroContent.subtitle ? <div className="lm-focus-card-hero-subtitle" style={{ marginTop: '2px' }}>{heroContent.subtitle}</div> : null}
           </div>
 
           {encouragementText ? <div className="lm-focus-card-encouragement">{encouragementText}</div> : null}

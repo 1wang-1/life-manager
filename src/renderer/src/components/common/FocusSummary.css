@@ -149,7 +149,7 @@
   transform: translateY(6px);
   transition: opacity 180ms ease, transform 180ms ease;
   z-index: 20;
-  border-radius: inherit;
+  border-radius: 24px;
   overflow: hidden;
   background: var(--color-bg-card);
   backdrop-filter: blur(14px);

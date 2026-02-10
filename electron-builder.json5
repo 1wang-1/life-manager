@@ -1,9 +1,9 @@
 // @see - https://www.electron.build/configuration/configuration
 {
   "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
-  "appId": "com.generator.manager",
+  "appId": "com.lifemanager.desktop",
   "asar": true,
-  "productName": "生成管理器",
+  "productName": "LifeManager",
   "directories": {
     "buildResources": "build",
     "output": "release/${version}"
@@ -20,7 +20,6 @@
   },
   "win": {
     "icon": "build/icon.png",
-    "signAndEditExecutable": false,
     "target": [
       {
         "target": "nsis",
