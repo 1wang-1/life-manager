@@ -340,7 +340,7 @@ export default function TasksPage() {
     addTask({
       title: taskData.title!,
       priority: taskData.priority || Priority.Normal,
-      selectedDates: taskData.selectedDates || [getTodayDate()],
+      selectedDates: taskData.selectedDates && taskData.selectedDates.length > 0 ? taskData.selectedDates : [getTodayDate()],
       plannedTime: taskData.plannedTime
     });
     setIsCreating(false);

@@ -16,6 +16,17 @@ export function CalendarPicker({ initialSelectedDates = [], onSelect, className,
   // Use a Set for easy toggling
   const [selectedDates, setSelectedDates] = useState<Set<string>>(() => new Set(initialSelectedDates));
 
+  // Get today's date for highlighting and disabling past dates
+  const today = useMemo(() => {
+    const now = new Date();
+    return {
+      date: now.getDate(),
+      month: now.getMonth(),
+      year: now.getFullYear(),
+      dateStr: now.toISOString().split('T')[0]
+    };
+  }, []);
+
   const lastEmittedRef = useRef(JSON.stringify([...initialSelectedDates].sort()));
   const onSelectRef = useRef(onSelect);
 
@@ -58,6 +69,15 @@ export function CalendarPicker({ initialSelectedDates = [], onSelect, className,
 
   const isSelected = (day: number) => {
     return selectedDates.has(getDateStr(day));
+  };
+
+  const isToday = (day: number) => {
+    return day === today.date && month === today.month && year === today.year;
+  };
+
+  const isPastDate = (day: number) => {
+    const dateObj = new Date(year, month, day);
+    return dateObj < new Date(today.year, today.month, today.date);
   };
 
   const updateDateSelection = (day: number, mode: 'select' | 'deselect') => {
@@ -136,11 +156,14 @@ export function CalendarPicker({ initialSelectedDates = [], onSelect, className,
             className={clsx('day-cell', {
               'empty': day === null,
               'selected': day !== null && isSelected(day),
+              'today': day !== null && isToday(day),
+              'past': day !== null && isPastDate(day),
             })}
-            onMouseDown={(e) => day !== null && handleMouseDown(e, day)}
+            onMouseDown={(e) => day !== null && !isPastDate(day) && handleMouseDown(e, day)}
             onMouseEnter={() => day !== null && handleMouseEnter(day)}
           >
             {day}
+            {day !== null && isToday(day) && <span className="today-indicator">今</span>}
             {day !== null && isSelected(day) && <Check size={10} className="check-icon" />}
           </div>
         ))}

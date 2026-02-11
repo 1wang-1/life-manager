@@ -83,12 +83,14 @@ export function TaskForm({ initialData, onSubmit, onCancel }: TaskFormProps) {
       setCalendarPos({ left: nextLeft, bottom: Math.max(12, nextBottom) });
     };
 
-    compute();
-    window.addEventListener('resize', compute);
+    // 使用 requestAnimationFrame 优化性能
+    const rafId = requestAnimationFrame(compute);
+    window.addEventListener('resize', compute, { passive: true });
     const scrollEl = formBodyRef.current;
     scrollEl?.addEventListener('scroll', compute, { passive: true });
 
     return () => {
+      cancelAnimationFrame(rafId);
       window.removeEventListener('resize', compute);
       scrollEl?.removeEventListener('scroll', compute);
     };
