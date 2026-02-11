@@ -57,8 +57,8 @@ export interface ThemePalette {
 }
 
 export const PRESET_COLORS: Record<string, string> = {
-  orange: '#FFB800',
   blue: '#3b82f6',
+  orange: '#FFB800',
   green: '#22c55e',
   purple: '#a855f7',
   pink: '#ec4899',

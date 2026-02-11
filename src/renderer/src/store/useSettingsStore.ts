@@ -37,7 +37,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   desktopNotify: true,
   dailySummary: true,
   theme: 'system',
-  themeColor: 'orange',
+  themeColor: 'blue',
   notificationLevel: 'level1',
   soundVolume: 0.7,
   enableDesktopPet: false,

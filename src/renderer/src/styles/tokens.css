@@ -1,15 +1,15 @@
 :root {
   /* --- THEME SYSTEM --- */
   /* These will be overridden by ThemeManager based on user settings */
-  --color-primary: #FFB000;
-  --color-primary-rgb: 255, 176, 0;
-  --color-primary-hover: #F5A300;
-  --color-primary-active: #E09600;
-  --color-primary-dark: #CC8800;
-  --color-primary-soft: rgba(255, 176, 0, 0.12);
-  --color-primary-light-bg: rgba(255, 176, 0, 0.08);
-  /* WCAG Compliance: Use dark text on yellow background for better contrast */
-  --color-on-primary: #1E2A3B;
+  --color-primary: #3b82f6;
+  --color-primary-rgb: 59, 130, 246;
+  --color-primary-hover: #3575dd;
+  --color-primary-active: #326fd2;
+  --color-primary-dark: #2f68c5;
+  --color-primary-soft: rgba(59, 130, 246, 0.12);
+  --color-primary-light-bg: rgba(59, 130, 246, 0.08);
+  /* WCAG Compliance: Use white text on blue background for better contrast */
+  --color-on-primary: #FFFFFF;
 
   /* --- NEUTRAL SYSTEM (Light Mode Defaults) --- */
   --gray-50: #F9FAFB;

@@ -43,42 +43,97 @@
   border: 1px solid var(--color-border-light);
 }
 
-.empty-diary-state {
+/* Template Selector Styles */
+.template-selector-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100%;
-  color: var(--color-text-tertiary);
+  padding: 2rem;
+  text-align: center;
+  gap: 2rem;
+}
+
+.template-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1.5rem;
+  width: 100%;
+  max-width: 800px;
 }
 
-.create-actions {
-  display: flex;
-  gap: 1rem;
-}
-
-.create-btn {
+.template-card {
+  background: white;
+  border: 1px solid var(--color-border-light);
+  border-radius: 16px;
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  width: 100px;
-  height: 100px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  background-color: white;
+  gap: 1rem;
   cursor: pointer;
-  transition: all 0.2s;
-  color: var(--color-text-secondary);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
 }
 
-.create-btn:hover {
+.template-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(var(--color-primary-rgb), 0.15);
   border-color: var(--color-primary);
+}
+
+.template-icon-wrapper {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+  transition: all 0.3s;
+}
+
+.template-card:hover .template-icon-wrapper {
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* Specific Template Colors */
+.template-card.note .template-icon-wrapper {
+  background: var(--color-primary-light);
   color: var(--color-primary);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-sm);
+}
+.template-card.note:hover { border-color: var(--color-primary); }
+
+.template-card.learning .template-icon-wrapper {
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+}
+.template-card.learning:hover { border-color: var(--color-primary); }
+
+.template-card.review .template-icon-wrapper {
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+}
+.template-card.review:hover { border-color: var(--color-primary); }
+
+.template-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-text-main);
+}
+
+.template-desc {
+  font-size: 0.85rem;
+  color: var(--color-text-tertiary);
+  line-height: 1.5;
+}
+
+/* Empty State Replacement */
+.empty-diary-state {
+  display: none; /* Replaced by template-selector */
 }
 
 .diary-entry-card {
@@ -86,13 +141,35 @@
   border-radius: var(--radius-md);
   padding: 1rem;
   border: 1px solid var(--color-border-light);
+  border-left: 4px solid var(--color-primary);
   cursor: pointer;
   transition: all 0.2s;
 }
 
-.diary-entry-card:hover {
-  border-color: var(--color-primary);
-  box-shadow: var(--shadow-sm);
+.entry-preview-title {
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: var(--color-text-main);
+}
+
+.entry-preview-content {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.5;
+}
+
+.entry-preview-content img {
+  display: none; /* Hide real images in preview list */
+}
+
+/* 彻底移除占位符多余样式，仅留文本 */
+.entry-preview-content .image-placeholder {
+  color: var(--color-primary);
+  font-weight: 500;
 }
 
 .entry-card-header {
@@ -128,133 +205,785 @@
   overflow: hidden;
 }
 
-/* Editor Styles */
+/* --- Editor Styles --- */
 .diary-editor {
   display: flex;
   flex-direction: column;
   height: 100%;
-  background-color: white;
+  background-color: #f9f9f9; /* Soft background around the paper */
+  position: relative;
+  /* No border radius or overflow hidden here to allow "desk" feel */
 }
 
 .editor-toolbar {
-  padding: 1rem;
-  border-bottom: 1px solid var(--color-border-light);
+  padding: 1rem 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  /* Transparent toolbar to blend with desk */
+  background: transparent;
+  z-index: 10;
 }
 
 .editor-back-btn {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
-  border: none;
-  background: none;
+  justify-content: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 16px; /* Added padding for text */
+  border: 1px solid var(--gray-200); /* Visible border */
+  background: white; /* Solid background */
+  border-radius: 20px; /* Pill shape */
   cursor: pointer;
-  color: var(--color-text-secondary);
+  color: var(--color-text-main);
   font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.03);
 }
 
 .editor-back-btn:hover {
-  color: var(--color-text-main);
+  background: var(--gray-50);
+  border-color: var(--gray-300);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
+/* Editor Mode Toggle */
+.editor-mode-toggle {
+  display: flex;
+  background: var(--color-bg-soft);
+  border-radius: var(--radius-input);
+  padding: 2px;
+  margin-bottom: 12px;
+  border: 1px solid var(--color-border);
+}
+
+.mode-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: calc(var(--radius-input) - 2px);
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.mode-btn:hover {
+  color: var(--color-text-main);
+  background: var(--color-bg-subtle);
+}
+
+.mode-btn.active {
+  background: var(--color-bg-card);
+  color: var(--color-primary);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.rich-text-mode {
+  margin-bottom: 0;
+}
+
+/* Editor Actions */
 .editor-actions {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.75rem;
 }
 
+.editor-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 20px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+}
+
+.editor-action-btn.primary {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+.editor-action-btn.primary:hover {
+  background: var(--color-primary-dark);
+  box-shadow: 0 4px 12px rgba(var(--color-primary-rgb), 0.2);
+}
+
+.editor-action-btn.primary.saved {
+  background: var(--color-success);
+  border-color: var(--color-success);
+  animation: saveSuccess 0.3s ease;
+}
+
+@keyframes saveSuccess {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.editor-action-btn.danger {
+  background: white;
+  color: var(--red-500);
+  border: 1px solid var(--red-200);
+}
+
+.editor-action-btn.danger:hover {
+  background: var(--red-50);
+  border-color: var(--red-300);
+}
+
+/* Container for the editor area */
 .editor-content {
   flex: 1;
-  padding: 2rem;
+  padding: 1rem;
   overflow-y: auto;
+  position: relative;
+  background-color: white; /* Added white background to ensure content is always on white */
 }
 
+/* The Paper Sheet */
+.editor-paper {
+  width: 100%;
+  max-width: 1100px; /* Restored to a wide, dashboard-like layout */
+  background: white;
+  min-height: calc(100% - 2rem); /* Fill most of the height */
+  margin: 0 auto 2rem auto;
+  padding: 4rem 5rem; /* Generous padding for a spacious feel */
+  box-shadow: none; /* Removed shadow to blend with the white container */
+  border-radius: 8px; /* Slightly larger radius to match dashboard cards */
+  position: relative;
+  transition: all 0.3s ease;
+  border: 1px solid var(--gray-100); /* Subtle border for definition instead of shadow */
+}
+
+.review-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.review-mode-toggle {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 1.5rem;
+  padding: 4px;
+  background: var(--color-bg-soft);
+  border-radius: var(--radius-input);
+  width: fit-content;
+  border: 1px solid var(--color-border);
+}
+
+.review-mode-toggle .mode-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: var(--radius-input);
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.review-mode-toggle .mode-btn:hover {
+  color: var(--color-text-main);
+  background: var(--color-bg-subtle);
+}
+
+.review-mode-toggle .mode-btn.active {
+  background: var(--color-bg-card);
+  color: var(--color-primary);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 900px) {
+  .editor-paper {
+    padding: 3rem 3rem;
+    max-width: 100%;
+    border: none; /* Remove border on smaller screens for seamless look */
+  }
+}
+
+@media (max-width: 768px) {
+  .editor-paper {
+    padding: 2rem 1.5rem;
+    margin: 0;
+    min-height: 100%;
+    border-radius: 0;
+    box-shadow: none;
+    border: none;
+  }
+  
+  .cornell-main {
+    flex-direction: column;
+    height: auto;
+  }
+}
+
+.editor-toolbar-date {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  opacity: 0.7;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* The Title Input */
 .editor-title-input {
   width: 100%;
-  font-size: 1.5rem;
-  font-weight: 600;
+  font-size: 2.5rem; /* Large and bold */
+  font-weight: 800;
   border: none;
   outline: none;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem; /* Reduced spacing to connect with date */
   color: var(--color-text-main);
+  background: transparent;
+  padding: 0.5rem 0 0.5rem 0; /* Balanced padding */
+  line-height: 1.2;
+  text-align: center; /* Center title for diary feel */
+  font-family: inherit;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.editor-title-input:hover, .editor-title-input:focus {
+  background: var(--gray-50);
+  border-bottom-color: var(--gray-200);
+  border-radius: 8px;
 }
 
 .editor-title-input::placeholder {
   color: var(--color-text-tertiary);
+  opacity: 0.5; /* Increased opacity for visibility */
+  font-weight: 700;
 }
 
+/* Date Display on Paper */
+.editor-date-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  color: var(--color-text-tertiary);
+  font-size: 0.95rem;
+  font-weight: 500;
+  font-family: 'Merriweather', serif;
+  border-bottom: 1px dashed var(--gray-200);
+  padding-bottom: 1rem;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.editor-date-display .date-main {
+  color: var(--color-text-secondary);
+  font-weight: 600;
+}
+
+/* Zen Note Container */
+.note-container {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-top: 0; /* Consistent spacing */
+  background: var(--gray-50); /* Subtle background for writing area */
+  border-radius: 12px;
+  padding: 1.5rem; /* Inner padding for text */
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.diary-editor-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+  background: white; /* Global white background */
+  min-height: 100%; /* Ensure it covers full height */
+  box-sizing: border-box; /* Include padding in height */
+  padding-bottom: 4rem; /* Extra padding at bottom for comfortable scrolling */
+}
+
+.note-container:hover, .note-container:focus-within {
+  background: white;
+  border-color: var(--color-primary);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* Page Mode Textarea - The Zen Writing Experience */
+.editor-textarea.page-mode {
+  width: 100%;
+  flex: 1;
+  min-height: 50vh;
+  border: none;
+  outline: none;
+  resize: none;
+  font-size: 1.15rem;
+  line-height: 2; /* Generous line height */
+  color: #374151; /* Dark gray for softer contrast */
+  background: transparent;
+  padding: 0;
+  font-family: 'Merriweather', 'Georgia', serif; /* Serif for notes */
+}
+
+.editor-textarea.page-mode::placeholder {
+  color: var(--color-text-tertiary);
+  opacity: 0.4;
+  font-style: italic;
+}
+
+/* Meta Bar at Bottom */
+.editor-meta-bar {
+  margin-top: 4rem; /* Push meta bar down, away from content */
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--gray-100);
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center the meta controls */
+  gap: 1.5rem;
+  opacity: 0.6; /* Subtle by default */
+  transition: opacity 0.3s;
+}
+
+.editor-meta-bar:hover {
+  opacity: 1;
+}
+
+.meta-divider-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: var(--gray-300);
+}
+
+/* Mood Selector - Minimalist Style */
 .mood-selector {
   display: flex;
   gap: 0.5rem;
-  margin-bottom: 1.5rem;
 }
 
 .mood-chip {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  border: 1px solid var(--color-border);
-  background: white;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid transparent;
+  background: transparent;
   cursor: pointer;
+  color: var(--color-text-tertiary);
+  transition: all 0.2s ease;
+}
+
+.mood-chip:hover {
+  background: var(--gray-50);
   color: var(--color-text-secondary);
-  transition: all 0.2s;
-  font-size: 0.9rem;
+  transform: scale(1.1);
 }
 
 .mood-chip.selected {
-  background-color: var(--color-primary-light);
-  border-color: var(--color-primary);
-  color: var(--color-primary);
-}
-
-.editor-textarea {
-  width: 100%;
-  min-height: 300px;
-  border: none;
-  outline: none;
-  resize: none;
-  font-size: 1rem;
-  line-height: 1.6;
+  background: var(--gray-50);
   color: var(--color-text-main);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
-.learning-form {
+/* Specific Mood Colors when selected */
+.mood-chip.mood-happy.selected { 
+  color: var(--color-primary); 
+  background: var(--color-primary-light); 
+  border-color: var(--color-primary);
+}
+.mood-chip.mood-excited.selected { 
+  color: var(--color-primary); 
+  background: var(--color-primary-light); 
+  border-color: var(--color-primary);
+}
+.mood-chip.mood-ok.selected { color: #4b5563; background: #f3f4f6; }
+.mood-chip.mood-tired.selected { 
+  color: var(--color-primary); 
+  background: var(--color-primary-light); 
+  border-color: var(--color-primary);
+}
+.mood-chip.mood-bad.selected { color: #dc2626; background: #fef2f2; }
+.mood-chip.mood-emo.selected { color: #7c3aed; background: #f5f3ff; }
+
+/* Tag Styles */
+.tags-container.compact {
   display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
-.bullet-input {
-  width: 100%;
-  padding: 0.75rem;
+.tags-icon-indicator {
+  color: var(--color-text-tertiary);
+  margin-right: 4px;
+}
+
+.diary-editor .tag-chip {
+  background: transparent;
   border: 1px solid var(--color-border-light);
-  border-radius: var(--radius-md);
-  font-size: 0.95rem;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
   transition: all 0.2s;
 }
 
-.bullet-input:focus {
-  border-color: var(--color-primary);
-  outline: none;
+.diary-editor .tag-chip:hover {
+  background: var(--gray-50);
+  border-color: var(--color-text-tertiary);
+  color: var(--color-text-main);
 }
 
-.add-bullet-btn {
-  align-self: flex-start;
+.diary-editor .remove-tag-icon {
+  opacity: 0.4;
+  cursor: pointer;
+}
+.diary-editor .remove-tag-icon:hover { opacity: 1; color: var(--red-500); }
+
+.diary-editor .tag-input {
+  border: none;
+  background: transparent;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  width: 80px;
+  padding: 0;
+}
+
+.diary-editor .tag-input:focus {
+  outline: none;
+  color: var(--color-text-main);
+}
+
+.diary-editor .tag-input::placeholder {
+  color: var(--color-text-tertiary);
+  opacity: 0.6;
+}
+
+/* Suggestions Row - Enhanced */
+.suggested-tags-row {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: var(--gray-50);
+  border-radius: 12px;
+  border: 1px solid var(--color-border-light);
+}
+
+.suggestion-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 0.75rem;
+}
+
+.suggestion-icon {
+  color: var(--color-primary);
+}
+
+.suggestion-text {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.suggestion-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.suggestion-chip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  background: white;
+  border: 1px solid var(--color-border-light);
+  border-radius: 16px;
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.suggestion-chip:hover:not(.added) {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: var(--color-primary-light);
+  transform: translateY(-1px);
+}
+
+.suggestion-chip.added {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+  opacity: 0.7;
+  cursor: default;
+}
+
+.suggestion-chip svg {
+  flex-shrink: 0;
+}
+
+/* Word Count Styles */
+.word-count-group {
+  display: flex;
+  align-items: center;
+}
+
+.word-count-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.word-count-text {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.reading-time-text {
+  font-size: 0.7rem;
+  color: var(--color-text-tertiary);
+}
+
+
+
+/* Cornell Layout */
+.cornell-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.cornell-main {
+  display: flex;
+  gap: 1.5rem;
+  min-height: 400px;
+}
+
+.cornell-cues, .cornell-notes {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
+  border: 1px solid var(--gray-200); /* Darker border for visibility */
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  background: var(--gray-50); /* Light gray background to denote input area */
+}
+
+.cornell-cues:hover, .cornell-notes:hover, 
+.cornell-cues:focus-within, .cornell-notes:focus-within {
+  background: white;
+  border-color: var(--color-primary);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.cornell-cues {
+  flex: 1;
+  max-width: 30%;
+  border-right: 2px solid var(--gray-200); /* Distinct divider */
+}
+
+.cornell-notes {
+  flex: 2;
+}
+
+.cornell-footer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+  padding: 1.5rem;
+  border: 1px solid var(--gray-200); /* Border for summary */
+  border-radius: 12px;
+  position: relative;
+  background: var(--gray-50); /* Background for summary */
+  transition: all 0.2s ease;
+}
+
+.cornell-footer:hover, .cornell-footer:focus-within {
+  background: white;
+  border-color: var(--color-primary);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.cornell-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+  margin-bottom: 1rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  border: none;
-  background: none;
-  color: var(--color-primary);
-  cursor: pointer;
-  font-size: 0.9rem;
+  letter-spacing: 1.5px;
+  transition: color 0.2s;
 }
 
-.add-bullet-btn:hover {
-  background-color: var(--color-primary-light);
-  border-radius: var(--radius-md);
+.cornell-footer .cornell-label {
+  justify-content: flex-start; /* Align left like others */
+  color: var(--color-text-secondary);
+}
+
+.cornell-textarea {
+  width: 100%;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--color-text-main);
+  resize: none;
+  outline: none;
+  font-family: inherit;
+  min-height: 100px;
+}
+
+.cornell-textarea:focus {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  transform: none;
+}
+
+/* Specific area tweaks */
+.cornell-cues .cornell-textarea { 
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+}
+
+.cornell-notes .cornell-textarea { 
+  min-height: 300px;
+}
+
+.cornell-footer .cornell-textarea { 
+  min-height: 80px; 
+}
+
+
+/* Review Section */
+.review-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.learning-form {
+  background: white;
+  padding: 0;
+  border: none;
+  margin-bottom: 2.5rem;
+}
+
+.learning-form label {
+  font-size: 1rem !important;
+  color: var(--color-text-main) !important;
+  margin-bottom: 1rem !important;
+}
+
+.bullet-item-wrapper {
+  margin-bottom: 0.5rem;
+}
+
+.bullet-dot {
+  color: var(--color-border);
+  font-size: 1rem;
+}
+
+.bullet-input {
+  font-size: 1rem;
+  padding: 0.5rem 0;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .editor-paper {
+    padding: 3rem 3rem;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .editor-paper {
+    padding: 2rem 1.5rem;
+    margin: 0;
+    min-height: 100%;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  
+  .cornell-main {
+    flex-direction: column;
+    height: auto; /* Allow auto height stacking */
+  }
+
+  .cornell-cues, .cornell-notes {
+    flex: none; /* Disable flex scaling */
+    width: 100%;
+  }
+
+  /* Give cues a smaller height in mobile view compared to notes */
+  .cornell-cues .cornell-textarea {
+    min-height: 100px;
+  }
+
+  .cornell-notes .cornell-textarea {
+    min-height: 200px;
+  }
+  
+  .editor-title-input {
+    font-size: 1.75rem;
+    text-align: left;
+  }
+  
+  .editor-meta-bar {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  
+  .meta-divider-dot { display: none; }
+}
+
+@media (max-width: 480px) {
+  .editor-paper {
+    padding: 1.5rem 1rem;
+  }
+
+  .editor-title-input {
+    font-size: 1.5rem;
+  }
+
+  .mood-selector {
+    flex-wrap: wrap;
+  }
 }

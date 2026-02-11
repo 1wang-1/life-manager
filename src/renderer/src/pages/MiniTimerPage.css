@@ -41,8 +41,8 @@ html, body, #root {
   -webkit-app-region: drag;
   isolation: isolate;
   
-  background: var(--mini-surface);
-  border: 1px solid var(--mini-stroke);
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
   box-shadow: var(--mini-shadow);
   border-radius: 20px;
 }
@@ -213,15 +213,15 @@ html, body, #root {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: var(--mini-surface-2);
-  border-color: var(--mini-stroke-2);
-  color: var(--color-text-secondary);
+  background: transparent;
+  border-color: #e9ecef;
+  color: #6c757d;
 }
 
 .mini-control-btn.stop:hover {
-  background: var(--mini-hover);
-  border-color: var(--mini-stroke);
-  color: var(--color-text-main);
+  background: rgba(239, 68, 68, 0.05);
+  border-color: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
   transform: scale(1.06);
 }
 
@@ -235,16 +235,17 @@ html, body, #root {
   max-height: 64px;
   border-radius: 14px;
 
-  background: var(--mini-surface-2);
-  border-color: var(--mini-stroke-2);
+  background: rgba(var(--color-primary-rgb), 0.08);
+  border-color: rgba(var(--color-primary-rgb), 0.15);
   color: var(--mini-primary);
   box-shadow: none;
 }
 
 .mini-control-btn.main-toggle:hover {
   transform: scale(1.02) translateY(-1px);
-  background: rgba(var(--color-primary-rgb), 0.1);
-  border-color: rgba(var(--color-primary-rgb), 0.22);
+  background: rgba(var(--color-primary-rgb), 0.12);
+  border-color: rgba(var(--color-primary-rgb), 0.2);
+  box-shadow: 0 2px 8px rgba(var(--color-primary-rgb), 0.15);
 }
 
 .mini-control-btn.main-toggle:active {
@@ -252,15 +253,16 @@ html, body, #root {
 }
 
 .mini-control-btn.main-toggle.running {
-  background: rgba(var(--color-primary-rgb), 0.08);
-  border-color: rgba(var(--color-primary-rgb), 0.18);
+  background: rgba(var(--color-primary-rgb), 0.06);
+  border-color: rgba(var(--color-primary-rgb), 0.12);
   color: var(--mini-primary);
   box-shadow: none;
 }
 
 .mini-control-btn.main-toggle.running:hover {
-  background: rgba(var(--color-primary-rgb), 0.12);
-  border-color: rgba(var(--color-primary-rgb), 0.24);
+  background: rgba(var(--color-primary-rgb), 0.1);
+  border-color: rgba(var(--color-primary-rgb), 0.16);
+  box-shadow: 0 2px 8px rgba(var(--color-primary-rgb), 0.15);
   transform: scale(1.02) translateY(-1px);
 }
 

@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
-import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay, addMonths, subMonths, startOfWeek, endOfWeek, subWeeks, getWeek, getWeekYear, differenceInCalendarDays, subDays } from 'date-fns';
+import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay, addMonths, subMonths, startOfWeek, endOfWeek, subWeeks, getWeek, getWeekYear, differenceInCalendarDays, subDays, differenceInCalendarWeeks } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
 import { useSearchParams } from 'react-router-dom';
 import { 
@@ -174,7 +174,19 @@ export default function CalendarPage() {
 
   const historyForest = useMemo(() => {
       const now = new Date();
-      return Array.from({ length: 6 }).map((_, idx) => {
+      let weeksToShow = 6;
+
+      if (focusRecords.length > 0) {
+          const timestamps = focusRecords.map(r => r.startTime);
+          const minTime = Math.min(...timestamps);
+          const minDate = new Date(minTime);
+          
+          const diff = differenceInCalendarWeeks(now, minDate, { weekStartsOn: 1 });
+          // Ensure at least 6 weeks, and add 1 to include the starting week
+          weeksToShow = Math.max(6, diff + 1);
+      }
+
+      return Array.from({ length: weeksToShow }).map((_, idx) => {
           const weekDate = subWeeks(now, idx);
           const start = startOfWeek(weekDate, { weekStartsOn: 1 });
           start.setHours(0, 0, 0, 0);
@@ -542,38 +554,16 @@ export default function CalendarPage() {
                         <div className="history-forest-list">
                             {historyForest.map(week => (
                                 <div key={week.key} className="history-forest-row">
-                                    <div className="history-forest-row__info" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    <div className="history-forest-row__info">
                                         <div className="history-forest-row__label">{week.label}</div>
-                                        {week.stage !== 'empty' && (() => {
-                                            const colors = {
-                                                forest: { text: '#14532D', bg: '#DCFCE7', border: '#86EFAC' },
-                                                tree: { text: '#15803D', bg: '#DCFCE7', border: '#BBF7D0' },
-                                                sapling: { text: '#16A34A', bg: '#F0FDF4', border: '#BBF7D0' },
-                                                seedling: { text: '#4ADE80', bg: '#F0FDF4', border: 'transparent' },
-                                                sprout: { text: '#65A30D', bg: '#F7FEE7', border: 'transparent' }
-                                            }[week.stage as string] || { text: '#6B7280', bg: '#F3F4F6', border: 'transparent' };
-                                            
-                                            return (
-                                                <span 
-                                                    className="history-forest-row__stage-name" 
-                                                    style={{ 
-                                                        fontSize: '12px', 
-                                                        fontWeight: 600,
-                                                        color: colors.text,
-                                                        background: colors.bg,
-                                                        padding: '2px 6px',
-                                                        borderRadius: '4px',
-                                                        border: '1px solid',
-                                                        borderColor: colors.border
-                                                    }}
-                                                >
-                                                    {week.stageName}
-                                                </span>
-                                            );
-                                        })()}
+                                        {week.stage !== 'empty' && (
+                                            <span className={`history-forest-row__stage-badge stage-${week.stage}`}>
+                                                {week.stageName}
+                                            </span>
+                                        )}
                                     </div>
                                     <div className="history-forest-row__icon" role="img" aria-label={week.stageAriaLabel}>
-                                        <GrowthIcon stage={week.stage} size={28} />
+                                        <GrowthIcon stage={week.stage} size={32} />
                                     </div>
                                 </div>
                             ))}
@@ -586,7 +576,7 @@ export default function CalendarPage() {
                         filteredEntries.map(entry => (
                             <div 
                               key={entry.id} 
-                              className="diary-item"
+                              className={`diary-item type-${entry.type}`}
                               onClick={() => setEditingEntryId(entry.id)}
                             >
                                 <div className="diary-date-col">

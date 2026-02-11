@@ -18,8 +18,10 @@ export type DiaryEntry = {
     // For Note
     trigger?: string;
     desire?: string;
-    // For Learning
-    keyPoints?: string[];
+    // For Learning (Cornell Style)
+    cornellCues?: string;
+    cornellSummary?: string;
+    keyPoints?: string[]; // Kept for backward compatibility
     example?: string;
     nextStep?: string;
     // For Review

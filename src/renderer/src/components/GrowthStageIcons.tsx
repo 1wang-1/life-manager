@@ -3,12 +3,12 @@ import React from 'react';
 export type GrowthStageType = 'empty' | 'sprout' | 'seedling' | 'sapling' | 'tree' | 'forest';
 
 const STAGE_ASSETS: Record<GrowthStageType, string> = {
-    empty: 'growth-stages/stage_0.png',
-    sprout: 'growth-stages/stage_1.png',
-    seedling: 'growth-stages/stage_2.png',
-    sapling: 'growth-stages/stage_3.png',
-    tree: 'growth-stages/stage_4.png',
-    forest: 'growth-stages/stage_5.png'
+    empty: '/growth-stages/stage_0.png',
+    sprout: '/growth-stages/stage_1.png',
+    seedling: '/growth-stages/stage_2.png',
+    sapling: '/growth-stages/stage_3.png',
+    tree: '/growth-stages/stage_4.png',
+    forest: '/growth-stages/stage_5.png'
 };
 
 const STAGE_TRANSFORMS: Partial<Record<GrowthStageType, string>> = {

@@ -342,6 +342,7 @@ class TimerService {
       if (breakReturnState) {
         useTimerStore.getState().setMode(breakReturnState.mode === 'pomodoro' ? 'countdown' : breakReturnState.mode);
         useTimerStore.getState().setRemainingTime(breakReturnState.remainingTime);
+        useTimerStore.getState().setTotalDuration(breakReturnState.totalDuration);
       } else {
         const defaultTime = effectiveMode === 'countdown' ? Math.max(1, useSettingsStore.getState().settings.countdownDefaultFocusMinutes) * 60 : 0;
         useTimerStore.getState().resetTimer(defaultTime, effectiveMode);
