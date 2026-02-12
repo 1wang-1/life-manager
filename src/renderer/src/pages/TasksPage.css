@@ -265,8 +265,13 @@
   flex-direction: column;
   gap: 16px;
   overflow-y: auto;
+  overflow-x: hidden;
   /* Add padding right for scrollbar */
   padding-right: 8px;
+  /* Ensure smooth scrolling */
+  scroll-behavior: smooth;
+  /* Add minimum height to ensure scrollability */
+  min-height: 0;
 }
 
 .overdue-group {
@@ -366,16 +371,22 @@
 }
 
 .kanban-column-body::-webkit-scrollbar {
-  width: 4px;
+  width: 6px;
 }
 
-.kanban-column-body::-webkit-scrollbar-thumb {
-  background: var(--gray-200);
+.kanban-column-body::-webkit-scrollbar-track {
+  background: transparent;
   border-radius: 3px;
 }
 
+.kanban-column-body::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+  transition: background 0.2s ease;
+}
+
 .kanban-column-body::-webkit-scrollbar-thumb:hover {
-  background: var(--gray-300);
+  background: rgba(0, 0, 0, 0.3);
 }
 
 .kanban-column-empty {

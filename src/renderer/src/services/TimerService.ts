@@ -555,8 +555,9 @@ class TimerService {
     });
     useTimerStore.getState().setLastRecordId(recordId);
 
-    // End focus session for the current task (unbind it), but DO NOT mark it as completed in DB
+    // End focus session for the current task and mark it as completed
     if (activeTaskId) {
+       useTaskStore.getState().completeTask(activeTaskId);
        useTimerStore.getState().setActiveTaskId(null);
     }
 
@@ -565,38 +566,60 @@ class TimerService {
     useTimerStore.getState().setLastDuration(elapsedTime);
     useTimerStore.getState().setShowSummary(false);
 
-    // Notification
+    // Notification and sound
     this.triggerNotification('专注完成', '休息一下吧！');
-    if (settings.notificationLevel === 'level1') {
+    // Always play completion sound when focus timer completes
+    if (elapsedTime > 0) {
       playTimerCompletionSound(false, false);
     }
     
+    // Set completed state first for UI feedback
+    useTimerStore.getState().setStatus('completed');
+    this.emitState();
+    
     if (settings.autoBreak) {
-      const payload = buildFocusRewardToastPayload({
-        durationSeconds: elapsedTime,
-        focusRecords: useTaskStore.getState().focusRecords,
-        lastRecordId: useTimerStore.getState().lastRecordId
-      });
-      useUIStore.getState().showToast({ ...payload, durationMs: 2200 });
+      // Delay before starting break for user to see completion
+      setTimeout(() => {
+        const payload = buildFocusRewardToastPayload({
+          durationSeconds: elapsedTime,
+          focusRecords: useTaskStore.getState().focusRecords,
+          lastRecordId: useTimerStore.getState().lastRecordId
+        });
+        useUIStore.getState().showToast({ ...payload, durationMs: 2200 });
 
-      const sessionTotalSeconds = (effectiveMode === 'countdown')
-        ? elapsedTime + Math.max(0, remainingTime)
-        : 0;
+        const sessionTotalSeconds = (effectiveMode === 'countdown')
+          ? elapsedTime + Math.max(0, remainingTime)
+          : 0;
 
-      const returnTo = effectiveMode === 'countdown'
-        ? { mode: 'countdown' as TimerMode, remainingTime: sessionTotalSeconds || Math.max(1, settings.countdownDefaultFocusMinutes) * 60, totalDuration: sessionTotalSeconds || Math.max(1, settings.countdownDefaultFocusMinutes) * 60 }
-        : { mode: effectiveMode, remainingTime: 0, totalDuration: 0 };
-      this.startBreak(settings.pomodoroBreak, returnTo);
+        const returnTo = effectiveMode === 'countdown'
+          ? { mode: 'countdown' as TimerMode, remainingTime: sessionTotalSeconds || Math.max(1, settings.countdownDefaultFocusMinutes) * 60, totalDuration: sessionTotalSeconds || Math.max(1, settings.countdownDefaultFocusMinutes) * 60 }
+          : { mode: effectiveMode, remainingTime: 0, totalDuration: 0 };
+        this.startBreak(settings.pomodoroBreak, returnTo);
+      }, 2000);
       return;
     }
 
-    useTimerStore.getState().setStatus('idle');
-    if (effectiveMode === 'countdown') {
-      useTimerStore.getState().setRemainingTime(Math.max(1, settings.countdownDefaultFocusMinutes) * 60);
-      useTimerStore.getState().setElapsedTime(0);
-    }
+    // Delay before resetting to idle for user to see completion state
+    setTimeout(() => {
+      // Reset timer to idle state properly
+      useTimerStore.getState().setStatus('idle');
+      useTimerStore.getState().setStartTime(null);
+      useTimerStore.getState().setSessionKind('focus');
+      useTimerStore.getState().setPomodoroPhase('work');
+      useTimerStore.getState().setBreakReturnState(null);
+      
+      if (effectiveMode === 'countdown') {
+        useTimerStore.getState().setRemainingTime(Math.max(1, settings.countdownDefaultFocusMinutes) * 60);
+        useTimerStore.getState().setElapsedTime(0);
+        useTimerStore.getState().setTotalDuration(Math.max(1, settings.countdownDefaultFocusMinutes) * 60);
+      } else {
+        useTimerStore.getState().setElapsedTime(0);
+        useTimerStore.getState().setRemainingTime(0);
+        useTimerStore.getState().setTotalDuration(0);
+      }
 
-    this.emitState();
+      this.emitState();
+    }, 2000);
 
     // Summary already set above
   }

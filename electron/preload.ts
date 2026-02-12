@@ -33,7 +33,8 @@ contextBridge.exposeInMainWorld('api', {
   },
   window: {
     maximize: () => ipcRenderer.invoke('window:maximize'),
-    restore: () => ipcRenderer.invoke('window:restore')
+    restore: () => ipcRenderer.invoke('window:restore'),
+    flash: (flag: boolean) => ipcRenderer.invoke('window:flash', flag)
   },
   timer: {
     startCountdown: (durationMs: number) => ipcRenderer.invoke('timer:startCountdown', { durationMs }),

@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import './MiniTimerPage.css';
 
 type MiniState = {
-  status: 'idle' | 'running' | 'paused';
+  status: 'idle' | 'running' | 'paused' | 'completed';
   mode: 'pomodoro' | 'stopwatch' | 'countdown' | 'forward_stage' | 'forward_free';
   remainingTime: number;
   elapsedTime: number;
@@ -40,6 +40,7 @@ export default function MiniTimerPage() {
   const isResting = state.sessionKind === 'break';
   const isPaused = state.status === 'paused';
   const isRunning = state.status === 'running';
+  const isCompleted = state.status === 'completed';
 
   const seconds = effectiveMode === 'stopwatch' || effectiveMode === 'forward_free' || effectiveMode === 'forward_stage' ? state.elapsedTime : state.remainingTime;
 
@@ -50,10 +51,11 @@ export default function MiniTimerPage() {
   }, [isResting, state.taskTitle]);
 
   const badgeText = useMemo(() => {
+    if (isCompleted) return '专注完成';
     if (isPaused) return '已暂停';
     if (isResting) return '休息中';
     return isCountdown ? '倒计时 · 专注中' : '正向 · 专注中';
-  }, [isCountdown, isPaused, isResting]);
+  }, [isCountdown, isPaused, isResting, isCompleted]);
 
   const handleToggle = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -94,7 +96,12 @@ export default function MiniTimerPage() {
         </div>
 
         <div className="mini-controls-large">
-          <button className="mini-control-btn stop" onClick={handleStop} title={isResting ? '跳过休息' : '结束'}>
+          <button 
+            className="mini-control-btn stop" 
+            onClick={isCompleted ? undefined : handleStop} 
+            disabled={isCompleted}
+            title={isResting ? '跳过休息' : '结束'}
+          >
             <Square size={20} fill="currentColor" />
           </button>
 
@@ -105,12 +112,20 @@ export default function MiniTimerPage() {
           ) : (
             <button
               className={clsx('mini-control-btn main-toggle', {
-                running: isRunning
+                running: isRunning,
+                disabled: isCompleted
               })}
-              onClick={handleToggle}
-              title={isRunning ? '暂停' : '继续'}
+              onClick={isCompleted ? undefined : handleToggle}
+              disabled={isCompleted}
+              title={isCompleted ? '专注完成' : (isRunning ? '暂停' : '继续')}
             >
-              {isRunning ? <Pause size={24} fill="currentColor" /> : <Play size={24} fill="currentColor" className="play-icon" />}
+              {isCompleted ? (
+                <div style={{ fontSize: '16px', fontWeight: '600' }}>✓</div>
+              ) : isRunning ? (
+                <Pause size={24} fill="currentColor" />
+              ) : (
+                <Play size={24} fill="currentColor" className="play-icon" />
+              )}
             </button>
           )}
         </div>

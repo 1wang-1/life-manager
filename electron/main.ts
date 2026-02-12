@@ -146,6 +146,7 @@ function createWindow() {
       alwaysOnTop: true,
       maximizable: false, // Prevent double-click maximize
       fullscreenable: false,
+      show: false, // Initially hidden for fade-in effect
       webPreferences: {
         preload: path.join(__dirname, 'preload.cjs'),
         sandbox: false,
@@ -170,6 +171,11 @@ function createWindow() {
       if (lastTimerState) {
         miniWindow?.webContents.send('timer:state', lastTimerState)
       }
+      
+      // Fade in effect
+      setTimeout(() => {
+        miniWindow?.show()
+      }, 100)
     })
 
     if (isDev && process.env['VITE_DEV_SERVER_URL']) {

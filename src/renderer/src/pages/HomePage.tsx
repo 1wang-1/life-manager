@@ -379,7 +379,7 @@ export default function HomePage() {
                 <div className="timer-ring-container-large">
                   <TimerRing 
                     progress={ringProgress} 
-                    state={status === 'running' ? 'running' : status === 'paused' ? 'paused' : status === 'idle' ? 'idle' : 'finished'}
+                    state={status === 'running' ? 'running' : status === 'paused' ? 'paused' : status === 'completed' ? 'finished' : status === 'idle' ? 'idle' : 'finished'}
                     variant={mode === 'stopwatch' ? 'ticks' : 'ring'}
                   />
 
@@ -452,14 +452,22 @@ export default function HomePage() {
                     <div className="running-controls">
                       <button
                         className={clsx(
-                          status === 'running' ? 'btn-hero-secondary is-neutral is-dimmed' : 'btn-hero-primary'
+                          status === 'running' ? 'btn-hero-secondary is-neutral is-dimmed' : 
+                          status === 'completed' ? 'btn-hero-secondary is-disabled' : 'btn-hero-primary'
                         )}
-                        onClick={handleToggleTimer}
+                        onClick={status === 'completed' ? undefined : handleToggleTimer}
+                        disabled={status === 'completed'}
                       >
                         {status === 'running' ? <Pause fill="currentColor" size={24} /> : <Play fill="currentColor" size={24} />}
                         <span>{status === 'running' ? '暂停' : '继续'}</span>
                       </button>
-                      <button className={clsx('btn-hero-secondary', { 'is-dimmed': status === 'running' })} onClick={handleStop}>
+                      <button 
+                        className={clsx('btn-hero-secondary', { 
+                          'is-dimmed': status === 'running' || status === 'completed' 
+                        })} 
+                        onClick={status === 'completed' ? undefined : handleStop}
+                        disabled={status === 'completed'}
+                      >
                         <Square fill="currentColor" size={20} />
                         <span>结束</span>
                       </button>

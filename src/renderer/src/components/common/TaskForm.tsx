@@ -16,11 +16,11 @@ export function TaskForm({ initialData, onSubmit, onCancel }: TaskFormProps) {
   const [theme, setTheme] = useState(initialData?.theme || '');
   const [priority, setPriority] = useState<TaskItem['priority']>(initialData?.priority || Priority.Normal);
   const [selectedDates, setSelectedDates] = useState<string[]>(initialData?.selectedDates || []);
-  const [plannedTime, setPlannedTime] = useState(initialData?.plannedTime || '25');
-  const [expectedPomodoros, setExpectedPomodoros] = useState<number>(initialData?.expectedPomodoros || 1);
+  const [plannedTime, setPlannedTime] = useState(initialData?.plannedTime || '');
+  const [expectedPomodoros, setExpectedPomodoros] = useState<number>(initialData?.expectedPomodoros || 0);
   const [showCalendar, setShowCalendar] = useState(false);
   const [showDetails, setShowDetails] = useState(true); // 默认展开更多选项
-  const [isCustomTime, setIsCustomTime] = useState(false);
+  const [isCustomTime, setIsCustomTime] = useState(initialData?.plannedTime ? true : false);
 
   const calendarTriggerRef = useRef<HTMLButtonElement | null>(null);
   const formBodyRef = useRef<HTMLDivElement | null>(null);
@@ -31,7 +31,7 @@ export function TaskForm({ initialData, onSubmit, onCancel }: TaskFormProps) {
   // Helper to display dates
   const dateDisplay = selectedDates.length > 0 
     ? `${selectedDates.length} 个日期已选`
-    : '今天'; // 更明确的默认提示
+    : '选择日期（默认今天）';
 
   const handleDateSelect = (dates: string[]) => {
     setSelectedDates(dates);
@@ -47,9 +47,9 @@ export function TaskForm({ initialData, onSubmit, onCancel }: TaskFormProps) {
     e.preventDefault();
     if (!title.trim()) return;
 
-    // 确保有默认的预计时间，防止任务立即逾期
-    const finalPlannedTime = plannedTime || '25'; // 默认25分钟
-    const finalExpectedPomodoros = expectedPomodoros || 1; // 默认1个番茄钟
+    // 只有用户选择了时间才设置，否则为空
+    const finalPlannedTime = plannedTime || undefined;
+    const finalExpectedPomodoros = expectedPomodoros || undefined;
 
     onSubmit({
       title,
@@ -188,8 +188,12 @@ export function TaskForm({ initialData, onSubmit, onCancel }: TaskFormProps) {
                     </button>
                     <button 
                       type="button"
-                      className={clsx('chip', { active: isCustomTime })}
-                      onClick={() => setIsCustomTime(true)}
+                      className={clsx('chip', { active: isCustomTime || (!isCustomTime && expectedPomodoros === 0) })}
+                      onClick={() => {
+                        setIsCustomTime(true);
+                        setPlannedTime('');
+                        setExpectedPomodoros(0);
+                      }}
                     >
                       自定义
                     </button>

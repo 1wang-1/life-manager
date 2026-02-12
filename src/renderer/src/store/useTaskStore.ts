@@ -115,7 +115,14 @@ export const useTaskStore = create<TaskState>((set, get) => ({
   isTaskTitleTaken: (title, excludeTaskId) => {
     const normalized = normalizeTaskTitle(title);
     if (!normalized) return false;
-    return get().tasks.some((t) => t.id !== excludeTaskId && normalizeTaskTitle(t.title) === normalized);
+    // Simple check: only against tasks that aren't already completed today
+    const today = new Date().toISOString().split('T')[0];
+    return get().tasks.some((t) => {
+      const isCompletedToday = t.status === TaskStatus.Completed && t.completedCycles?.includes(today);
+      return t.id !== excludeTaskId && 
+             normalizeTaskTitle(t.title) === normalized && 
+             !isCompletedToday;
+    });
   },
 
   addTask: (taskInput) =>

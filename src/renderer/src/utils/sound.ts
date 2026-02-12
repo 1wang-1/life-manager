@@ -123,13 +123,15 @@ export const playTimerStartSound = () => {
 
     const now = ctx.currentTime;
     
-    // Mechanical "Click" (High pitch, very short)
-    createOscillator(ctx, 800, now, 0.05, 'square', 0.1 * volume);
-    createOscillator(ctx, 400, now, 0.1, 'sine', 0.2 * volume);
+    // Gentle, pleasant chime - soft ascending tones
+    // Using sine waves for smoother sound
+    createOscillator(ctx, 523.25, now, 0.1, 'sine', 0.15 * volume); // C5 - gentle start
+    createOscillator(ctx, 659.25, now + 0.05, 0.1, 'sine', 0.2 * volume); // E5 - warm middle
+    createOscillator(ctx, 783.99, now + 0.1, 0.15, 'sine', 0.15 * volume); // G5 - soft end
 
     setTimeout(() => {
       if (ctx.state !== 'closed') ctx.close().catch(console.error);
-    }, 200);
+    }, 300);
   } catch (e) { console.error(e); }
 };
 

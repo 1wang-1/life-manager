@@ -9,6 +9,7 @@ import { TaskDensityCalendar } from '../components/common/TaskDensityCalendar';
 import { TaskDrawer } from '../components/common/TaskDrawer';
 import { useTimerStore } from '../store/useTimerStore';
 import { timerService } from '../services/TimerService';
+import { useUIStore } from '../store/useUIStore';
 import clsx from 'clsx';
 import './TasksPage.css';
 
@@ -46,6 +47,7 @@ const statusConfig: Record<TaskStatus, { label: string; desc: string; icon: Reac
 export default function TasksPage() {
   const { tasks, addTask, updateTask, fetchTasks, completeTask, isTaskTitleTaken } = useTaskStore();
   const { activeTaskId, status: timerStatus } = useTimerStore();
+  const showToast = useUIStore((s) => s.showToast);
   
   // UI State
   const [isCreating, setIsCreating] = useState(false);
@@ -344,6 +346,12 @@ export default function TasksPage() {
       plannedTime: taskData.plannedTime
     });
     setIsCreating(false);
+    
+    // Show a brief toast to confirm task creation
+    showToast({
+      title: `任务"${taskData.title}"已创建`,
+      durationMs: 2000
+    });
   };
 
   return (
