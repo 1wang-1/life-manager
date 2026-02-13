@@ -2,7 +2,7 @@
 import { create } from 'zustand';
 import { TimerMode, useSettingsStore } from './useSettingsStore';
 
-export type TimerStatus = 'idle' | 'running' | 'paused';
+export type TimerStatus = 'idle' | 'running' | 'paused' | 'completed';
 
 export type StopConfirmState = { seconds: number; fromMini?: boolean } | null;
 
